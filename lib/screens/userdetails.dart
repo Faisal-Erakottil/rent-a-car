@@ -6,10 +6,10 @@ import 'package:gap/gap.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:main_project/data_model/box.dart';
 import 'package:main_project/data_model/data_model.dart';
-//import 'package:main_project/db_functions/db_functions.dart';
+import 'package:main_project/screens/home_screen.dart';
 import 'package:main_project/widgets/custom_text.dart';
 import 'package:main_project/widgets/custom_text_field.dart';
-import 'package:main_project/screens/home_screen.dart';
+import 'package:main_project/widgets/customcolors.dart';
 
 class Userdetails extends StatefulWidget {
   const Userdetails({super.key});
@@ -46,24 +46,29 @@ class _UserdetailsState extends State<Userdetails> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 29, 29, 31),
       appBar: AppBar(
-          backgroundColor: Colors.black,
-          title: const Padding(
-              padding: EdgeInsets.all(86.0),
-              child: CustomText(
-                textContent: "User Details",
-                textColor: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ))),
+        backgroundColor: Colors.black,
+        title: const Padding(
+          padding: EdgeInsets.all(86.0),
+          child: CustomText(
+            textContent: "User Details",
+            textColor: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        iconTheme: const IconThemeData(
+          color: CustomColor.white,
+        ),
+      ),
       //=============== image picker
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
             GestureDetector(
-                onTap: pickImageFromGallery,
-                child: Center(
-                    child: CircleAvatar(
+              onTap: pickImageFromGallery,
+              child: Center(
+                child: CircleAvatar(
                   backgroundColor: Colors.black,
                   radius: 70,
                   child: imagepath != null
@@ -80,7 +85,9 @@ class _UserdetailsState extends State<Userdetails> {
                           color: Colors.white,
                           size: 50,
                         ),
-                ))),
+                ),
+              ),
+            ),
             const Gap(10),
             Column(
               children: [
@@ -141,11 +148,12 @@ class _UserdetailsState extends State<Userdetails> {
                         image: imagepath?.path ?? "",
                       );
                     }
+                  
                     onAddSaveButtonClicked();
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => HomeScreen(selectedImage:selectedImage),
+                        builder: (context) => const HomeScreen(),
                       ),
                     );
                   },
@@ -169,7 +177,7 @@ class _UserdetailsState extends State<Userdetails> {
       ),
     );
   }
-
+  
   Future<void> onAddSaveButtonClicked() async {
     final _name = nameController.text.trim();
     final _mobile = mobController.text.trim();
@@ -187,6 +195,7 @@ class _UserdetailsState extends State<Userdetails> {
       email: _email,
       image: imagepath?.path ?? "",
     );
+    //  print(userDetails);
     // Pass the user details back to the previous screen (HomeScreen)
     Navigator.pop(context, userDetails);
   }
@@ -196,14 +205,14 @@ class _UserdetailsState extends State<Userdetails> {
     final name = nameController.text.trim();
     final mobile = mobController.text.trim();
     final email = emailController.text.trim();
-    final image = imagepath?.path ?? "";
+    final image = imagepath?.path;
 
     // Save the input data to Hive
     final userDetails = UserDetailsModel(
       name: name,
       mobile: mobile,
       email: email,
-      image: image,
+      image: image!,
     );
     final box = Boxes.getuser();
     box.put('details_db', userDetails);

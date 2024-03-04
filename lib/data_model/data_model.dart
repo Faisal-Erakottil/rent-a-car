@@ -9,7 +9,7 @@ class UserDetailsModel extends HiveObject {
   @HiveField(0)
   int? id;
   @HiveField(1)
-  late final String name;
+  final String name;
   @HiveField(2)
   late final String mobile;
   @HiveField(3)
@@ -32,17 +32,17 @@ class vehicleDetailsModel extends HiveObject {
   @HiveField(0)
   int? id;
   @HiveField(1)
-  late final String vehiclename;
+  final String vehiclename;
   @HiveField(2)
-  late final String vehiclereg;
+  final String vehiclereg;
   @HiveField(3)
-  late final String fueltype;
+  final String fueltype;
   @HiveField(4)
-  late final String seates;
+  final String seates;
   @HiveField(5)
-  late final String rent;
+  final String rent;
   @HiveField(6)
-  late final String image;
+  final String carimage;
 
   vehicleDetailsModel({
     this.id,
@@ -51,8 +51,6 @@ class vehicleDetailsModel extends HiveObject {
     required this.fueltype,
     required this.seates,
     required this.rent,
-    required this.image,
+    required this.carimage,
   });
 }
-
-

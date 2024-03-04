@@ -14,13 +14,14 @@ class CustomTextField extends StatelessWidget {
   final TextInputType? keyboardType;
 
   const CustomTextField({
-    this.controller,
+    required this.controller,
     required this.labelText,
     this.hintText,
     required this.prefixIcon,
     this.obscureText = false,
     this.validator,
     this.keyboardType,
+    textCapitalization = TextCapitalization.characters,
   });
 
   @override

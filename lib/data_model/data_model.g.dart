@@ -71,7 +71,7 @@ class vehicleDetailsModelAdapter extends TypeAdapter<vehicleDetailsModel> {
       fueltype: fields[3] as String,
       seates: fields[4] as String,
       rent: fields[5] as String,
-      image: fields[6] as String,
+      carimage: fields[6] as String,
     );
   }
 
@@ -92,7 +92,7 @@ class vehicleDetailsModelAdapter extends TypeAdapter<vehicleDetailsModel> {
       ..writeByte(5)
       ..write(obj.rent)
       ..writeByte(6)
-      ..write(obj.image);
+      ..write(obj.carimage);
   }
 
   @override

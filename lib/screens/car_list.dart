@@ -4,16 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:main_project/data_model/box.dart';
 import 'package:main_project/data_model/data_model.dart';
+import 'package:main_project/screens/add_vehicle.dart';
 import 'package:main_project/widgets/custom_text.dart';
+import 'package:main_project/widgets/customcolors.dart';
 
-class VehicleList extends StatefulWidget {
-  const VehicleList({super.key});
+class VehicleList extends StatelessWidget {
+  const VehicleList({Key? key}) : super(key: key);
 
-  @override
-  State<VehicleList> createState() => _VehicleListState();
-}
-
-class _VehicleListState extends State<VehicleList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +30,7 @@ class _VehicleListState extends State<VehicleList> {
             return ListView.builder(
               itemCount: data.length,
               itemBuilder: (context, int index) {
-                bool isLastitem = index == data.length - 1;
+                bool isLastitem = index == data.length;
                 return Padding(
                   padding: EdgeInsets.only(
                     bottom: isLastitem ? 75 : 0,
@@ -48,40 +45,98 @@ class _VehicleListState extends State<VehicleList> {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                                      
                             Padding(
                               padding: const EdgeInsets.all(10.0),
                               child: Container(
                                 width: 170,
-                                height: 130,
+                                height: 200,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
                                   image: DecorationImage(
                                     image: FileImage(
-                                      File(data[index].image),
+                                      File(data[index].carimage),
                                     ),
                                     fit: BoxFit.cover,
                                   ),
                                 ),
                               ),
                             ),
-                            Expanded(
-                                child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 10, left: 30),
-                                  child: Text(
-                                    data[index].vehiclename,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                    ),
+                            //============================Edit button
+                            IconButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const AddVehicle(),
                                   ),
-                                ),
-                               
-                              ],
-                            ))
+                                );
+                              },
+                              icon: const Icon(
+                                Icons.edit,
+                                color: CustomColor.green,
+                              ),
+                            ),
+                            //==============================Delete button
+                            IconButton(
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: const Text("Confirm"),
+                                      content: const Text(
+                                          "Are you sure you want to delete this item?"),
+                                      actions: <Widget>[
+                                        //=============Cancel
+                                        TextButton(
+                                          onPressed: () {
+                                            // Close the dialog
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: const Text("CANCEL"),
+                                        ),
+                                        //============Delete
+                                        TextButton(
+                                          onPressed: () {
+                                            // Delete the item from the box
+                                            final box = Boxes.getvehicleData();
+                                            box.delete(data[index].key);
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: const Text("DELETE"),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                              icon: const Icon(Icons.delete),
+                            ),
+                            //==============================
+                            Expanded(
+                              child: Row(
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 10, left: 10),
+                                        child: Text(
+                                          data[index].vehiclename,
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            )
                           ],
                         ),
                       ),

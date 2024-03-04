@@ -5,10 +5,11 @@ import 'package:gap/gap.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:main_project/data_model/data_model.dart';
 import 'package:main_project/db_functions/db_functions.dart';
+import 'package:main_project/screens/home_screen.dart';
 import 'package:main_project/widgets/custom_button.dart';
 import 'package:main_project/widgets/custom_text.dart';
 import 'package:main_project/widgets/custom_text_field.dart';
-import 'package:main_project/screens/home_screen.dart';
+import 'package:main_project/widgets/customcolors.dart';
 
 class AddVehicle extends StatefulWidget {
   const AddVehicle({super.key});
@@ -18,14 +19,14 @@ class AddVehicle extends StatefulWidget {
 
 class AddVehicleState extends State<AddVehicle> {
   final vehiclenameController = TextEditingController();
-final vehicleRegController = TextEditingController();
-final vehicleRentController = TextEditingController();
+  final vehicleRegController = TextEditingController();
+  final vehicleRentController = TextEditingController();
 
-File? imagepath;
-String? selectedImage;
-String? selectedFuel;
-String? selectedSeat;
-final formKey = GlobalKey<FormState>();
+  File? imagepath;
+  String? selectedImage;
+  String? selectedFuel;
+  String? selectedSeat;
+  final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,6 +40,9 @@ final formKey = GlobalKey<FormState>();
             fontSize: 18,
             textColor: Colors.white,
           ),
+        ),
+        iconTheme: const IconThemeData(
+          color: CustomColor.white,
         ),
       ),
       body: SingleChildScrollView(
@@ -106,6 +110,7 @@ final formKey = GlobalKey<FormState>();
                     hintText: "Car Name",
                     prefixIcon: Icons.directions_car_filled,
                     keyboardType: TextInputType.name,
+                    textCapitalization: TextCapitalization.characters,
                   ),
 
                   const Gap(10),
@@ -117,6 +122,7 @@ final formKey = GlobalKey<FormState>();
                     prefixIcon: Icons.pin,
                     keyboardType: TextInputType.streetAddress,
                   ),
+
                   const Gap(10),
                   //=====================================vehicle color
                   customDropdownField(
@@ -166,6 +172,7 @@ final formKey = GlobalKey<FormState>();
                     prefixIcon: Icons.currency_rupee,
                     keyboardType: TextInputType.number,
                   ),
+
                   const Gap(10),
                   //=======================================Save Details
                   customElevatedButton(
@@ -206,11 +213,18 @@ final formKey = GlobalKey<FormState>();
     final vehicleName = vehiclenameController.text.trim();
     final vehicleReg = vehicleRegController.text.trim();
     final DailyRent = vehicleRentController.text.trim();
-    if (imagepath == null) {
+
+    // Validation
+    if (imagepath == null ||
+        vehicleName.isEmpty ||
+        vehicleReg.isEmpty ||
+        selectedFuel == null ||
+        selectedSeat == null ||
+        DailyRent.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: CustomText(
-            textContent: "Pleas select an image",
+            textContent: "Please select an image and fill out all fields",
             textColor: Colors.black,
           ),
           backgroundColor: Colors.white,
@@ -218,28 +232,27 @@ final formKey = GlobalKey<FormState>();
       );
       return;
     }
-    if (vehicleName.isEmpty ||
-        vehicleReg.isEmpty ||
-        selectedFuel == null ||
-        selectedSeat == null ||
-        DailyRent.isEmpty) {
-      return;
-    }
+
     final cars = vehicleDetailsModel(
       vehiclename: vehicleName,
       vehiclereg: vehicleReg,
       fueltype: selectedFuel!,
       seates: selectedSeat!,
       rent: DailyRent,
-      image: imagepath?.path ?? "",
+      carimage: imagepath?.path ?? "",
     );
+
+    // Save to database
     addCar(cars);
-    Navigator.pop(context);
+    // Clear text fields and reset state
     vehiclenameController.clear();
     vehicleRegController.clear();
     vehicleRentController.clear();
     setState(() {
       imagepath = null;
     });
+
+    // Navigate back
+    Navigator.pop(context);
   }
 }
