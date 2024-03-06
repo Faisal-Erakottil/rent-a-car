@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:main_project/widgets/custom_text.dart';
+import 'package:main_project/widgets/customcolors.dart';
 
 class Revenue extends StatefulWidget {
   const Revenue({super.key});
@@ -23,6 +24,9 @@ class _RevenueState extends State<Revenue> {
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
+        ),
+         iconTheme: const IconThemeData(
+          color: CustomColor.white,
         ),
       ),
       body: Padding(

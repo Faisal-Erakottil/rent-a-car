@@ -1,4 +1,4 @@
-// ignore_for_file: camel_case_types
+// ignore_for_file: camel_case_types, non_constant_identifier_names
 
 import 'package:hive/hive.dart';
 part 'data_model.g.dart';
@@ -11,11 +11,11 @@ class UserDetailsModel extends HiveObject {
   @HiveField(1)
   final String name;
   @HiveField(2)
-  late final String mobile;
+  final String mobile;
   @HiveField(3)
-  late final String email;
+  final String email;
   @HiveField(4)
-  late final String image;
+  final String image;
 
   UserDetailsModel({
     this.id,
@@ -52,5 +52,42 @@ class vehicleDetailsModel extends HiveObject {
     required this.seates,
     required this.rent,
     required this.carimage,
+  });
+
+  set isRented(bool isRented) {}
+}
+
+//=====================================Customer Details
+@HiveType(typeId: 3)
+class CustomerDetailsModel extends HiveObject {
+  @HiveField(0)
+  int? id;
+  @HiveField(1)
+  final String customerName;
+  @HiveField(2)
+  final String mobilNumber;
+  @HiveField(3)
+  final String LicenceNumber;
+  @HiveField(4)
+  final String Email;
+  @HiveField(5)
+  final String days;
+  @HiveField(6)
+  final String reading;
+  @HiveField(7)
+  final String advance;
+  @HiveField(8)
+  final String CustomerImage;
+
+  CustomerDetailsModel({
+    this.id,
+    required this.customerName,
+    required this.mobilNumber,
+    required this.LicenceNumber,
+    required this.Email,
+    required this.days,
+    required this.reading,
+    required this.advance,
+    required this.CustomerImage,
   });
 }

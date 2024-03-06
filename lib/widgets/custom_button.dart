@@ -5,9 +5,9 @@ Widget customElevatedButton({
   required String label,
   Color? backgroundColor,
   Color? labelColor,
-  double width = 200,
+  double width = 120,
   double height = 5,
-  required Icon icon,
+  Icon? icon,
 }) {
   return ElevatedButton(
     style: ElevatedButton.styleFrom(

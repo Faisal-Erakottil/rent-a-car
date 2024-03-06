@@ -186,6 +186,9 @@ class AddVehicleState extends State<AddVehicle> {
                       );
                     },
                     label: "Save Details",
+                    labelColor: CustomColor.white,
+                    width: 150,
+                    backgroundColor: CustomColor.blue,
                     icon: const Icon(Icons.save),
                   )
                   //============================================

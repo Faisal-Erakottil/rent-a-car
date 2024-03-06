@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 import 'package:flutter/material.dart';
 import 'package:main_project/widgets/custom_text.dart';
+import 'package:main_project/widgets/customcolors.dart';
 
 class HelpAndInfo extends StatelessWidget {
   const HelpAndInfo({super.key});
@@ -18,6 +19,9 @@ class HelpAndInfo extends StatelessWidget {
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
+        ),
+         iconTheme: const IconThemeData(
+          color: CustomColor.white,
         ),
       ),
       body: const Padding(

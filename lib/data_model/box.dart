@@ -8,4 +8,8 @@ class Boxes {
   static Box<vehicleDetailsModel> getvehicleData() =>
       Hive.box<vehicleDetailsModel>("vehicle_db");
 
+  static Box<CustomerDetailsModel> getcustomerdetails() =>
+      Hive.box<CustomerDetailsModel>('customer_db');
 }
+
+

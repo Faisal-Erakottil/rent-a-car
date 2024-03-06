@@ -1,10 +1,14 @@
 // ignore_for_file: non_constant_identifier_names, no_leading_underscores_for_local_identifiers
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:main_project/data_model/data_model.dart';
 
 ValueNotifier<List<UserDetailsModel>> usernotifer = ValueNotifier([]);
 ValueNotifier<List<vehicleDetailsModel>> vehiclenotifer = ValueNotifier([]);
+ValueNotifier<List<CustomerDetailsModel>> customerListNotifier =
+    ValueNotifier([]);
 //=====================================Adding Data to Box
 Future<void> addDetail(UserDetailsModel value) async {
   final DetailsDB = await Hive.openBox<UserDetailsModel>('details_db');
@@ -45,7 +49,20 @@ Future<void> deletVehicle(int id) async {
   await carDB.delete(id);
   getVehicleDetails();
 }
-//=====================================
 
+//=====================================adding Customer
+Future<void> addcustomer(CustomerDetailsModel value) async {
+  final customerDB = await Hive.openBox<CustomerDetailsModel>("customer_db");
+  final id = await customerDB.add(value);
+  value.id = id;
+  customerListNotifier.value.add(value);
+  customerListNotifier.notifyListeners();
+}
 
-
+//======================================get all Customers
+Future<void> getAllCustomers() async {
+  final customerDB = await Hive.openBox<CustomerDetailsModel>("customer_db");
+  customerListNotifier.value.clear();
+  customerListNotifier.value.addAll(customerDB.values);
+  customerListNotifier.notifyListeners();
+}

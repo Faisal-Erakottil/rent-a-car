@@ -17,7 +17,11 @@ void main() async {
   }
   await Hive.openBox<vehicleDetailsModel>("vehicle_db");
   //========================================
-
+  if (!Hive.isAdapterRegistered(CustomerDetailsModelAdapter().typeId)) {
+    Hive.registerAdapter(CustomerDetailsModelAdapter());
+  }
+  await Hive.openBox<CustomerDetailsModel>("customer_db");
+  //========================================
   runApp(const MyApp());
 }
 
