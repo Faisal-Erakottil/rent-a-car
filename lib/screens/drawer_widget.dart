@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:main_project/data_model/data_model.dart';
+import 'package:main_project/screens/customerList.dart';
 import 'package:main_project/screens/help&info.dart';
 import 'package:main_project/screens/revenue.dart';
 import 'package:main_project/screens/userdetails.dart';
@@ -28,9 +29,10 @@ class CustomDrawer extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: 38,
-                    backgroundImage: userDetails != null && userDetails!.image.isNotEmpty
-                        ? FileImage(File(userDetails!.image))
-                        : null,
+                    backgroundImage:
+                        userDetails != null && userDetails!.image.isNotEmpty
+                            ? FileImage(File(userDetails!.image))
+                            : null,
                   ),
                   const SizedBox(height: 5),
                   if (userDetails != null) ...[
@@ -76,6 +78,18 @@ class CustomDrawer extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => const Userdetails(),
+                  ),
+                );
+              },
+            ),
+            CustomList(
+              leadingIcon: Icons.person_add,
+              title: "Customer List",
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const CustomerList(),
                   ),
                 );
               },

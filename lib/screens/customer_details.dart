@@ -302,7 +302,7 @@ class _CustomerDetailsState extends State<CustomerDetails> {
     );
     final box = Boxes.getcustomerdetails();
     box.put('customer_db', CustomerDetails);
-
+  
     // Navigate back to the HomeScreen or perform any other action
     Navigator.pop(context);
   }

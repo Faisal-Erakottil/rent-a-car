@@ -55,7 +55,7 @@ class VehicleList extends StatelessWidget {
                               child: Row(
                                 children: [
                                   SizedBox(
-                                    width: 322,
+                                    width: 300,
                                     height: 30,
                                     child: Padding(
                                       padding:
@@ -70,7 +70,7 @@ class VehicleList extends StatelessWidget {
                                   ),
                                   //=========================================Edit button
                                   SizedBox(
-                                    width: 50,
+                                    width: 40,
                                     height: 50,
                                     child: IconButton(
                                       onPressed: () {
@@ -88,10 +88,65 @@ class VehicleList extends StatelessWidget {
                                       ),
                                     ),
                                   ),
+                              //=========================================Delete
+                                  SizedBox(
+                                    height: 50,
+                                    width: 30,
+                                    //color: CustomColor.black,
+                                     child: IconButton(
+                                      onPressed: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              backgroundColor: CustomColor.most,
+                                              title: const CustomText(
+                                                textContent: "Confirm",
+                                                fontWeight: FontWeight.bold,
+                                                textColor: CustomColor.white,
+                                                fontSize: 22,
+                                              ),
+                                              content: const CustomText(
+                                                textContent:
+                                                    "Are you sure you want to delete this item?",
+                                                fontSize: 18,
+                                              ),
+                                              actions: <Widget>[
+                                                //=============Cancel
+                                                customElevatedButton(
+                                                    onPressed: () {
+                                                      Navigator.of(context).pop();
+                                                    },
+                                                    label: "CANCEL",
+                                                    labelColor: CustomColor.black,
+                                                    backgroundColor:
+                                                        CustomColor.green),
+                                                //============Delete
+                                                customElevatedButton(
+                                                    onPressed: () {
+                                                      final box =
+                                                          Boxes.getvehicleData();
+                                                      box.delete(data[index].key);
+                                                      Navigator.of(context).pop();
+                                                    },
+                                                    backgroundColor:
+                                                        CustomColor.red,
+                                                    label: "DELETE",
+                                                    labelColor:
+                                                        CustomColor.black),
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      },
+                                      icon: const Icon(Icons.delete),
+                                    ),
+
+                                  )
                                 ],
                               ),
                             ),
-                            //===========================================Car Image
+                            //=========================================Car Image
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -130,7 +185,8 @@ class VehicleList extends StatelessWidget {
                                 ),
                                 //===============================Rent now button
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 45.0,top: 5),
+                                  padding:
+                                      const EdgeInsets.only(left: 45.0, top: 5),
                                   child: SizedBox(
                                     width: 120,
                                     height: 35,
@@ -147,60 +203,12 @@ class VehicleList extends StatelessWidget {
                                         label: "Rent Now",
                                         labelColor: CustomColor.black,
                                         backgroundColor: CustomColor.green),
-                                    // child: IconButton(
-                                    //   onPressed: () {
-                                    //     showDialog(
-                                    //       context: context,
-                                    //       builder: (BuildContext context) {
-                                    //         return AlertDialog(
-                                    //           backgroundColor: CustomColor.most,
-                                    //           title: const CustomText(
-                                    //             textContent: "Confirm",
-                                    //             fontWeight: FontWeight.bold,
-                                    //             textColor: CustomColor.white,
-                                    //             fontSize: 22,
-                                    //           ),
-                                    //           content: const CustomText(
-                                    //             textContent:
-                                    //                 "Are you sure you want to delete this item?",
-                                    //             fontSize: 18,
-                                    //           ),
-                                    //           actions: <Widget>[
-                                    //             //=============Cancel
-                                    //             customElevatedButton(
-                                    //                 onPressed: () {
-                                    //                   Navigator.of(context).pop();
-                                    //                 },
-                                    //                 label: "CANCEL",
-                                    //                 labelColor: CustomColor.black,
-                                    //                 backgroundColor:
-                                    //                     CustomColor.green),
-                                    //             //============Delete
-                                    //             customElevatedButton(
-                                    //                 onPressed: () {
-                                    //                   final box =
-                                    //                       Boxes.getvehicleData();
-                                    //                   box.delete(data[index].key);
-                                    //                   Navigator.of(context).pop();
-                                    //                 },
-                                    //                 backgroundColor:
-                                    //                     CustomColor.red,
-                                    //                 label: "DELETE",
-                                    //                 labelColor:
-                                    //                     CustomColor.black),
-                                    //           ],
-                                    //         );
-                                    //       },
-                                    //     );
-                                    //   },
-                                    //   icon: const Icon(Icons.delete),
-                                    // ),
                                   ),
                                 ),
                               ],
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(left:10.0),
+                              padding: const EdgeInsets.only(left: 10.0),
                               child: SizedBox(
                                 width: 170,
                                 height: 25,
@@ -233,7 +241,7 @@ class VehicleList extends StatelessWidget {
                                 ),
                               ),
                             )
-                            //====================================================
+                            //==================================================
                           ],
                         ),
                       ),
@@ -248,3 +256,4 @@ class VehicleList extends StatelessWidget {
     );
   }
 }
+                             
