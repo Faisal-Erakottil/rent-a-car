@@ -1,31 +1,21 @@
-// ignore_for_file: file_names
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:main_project/data_model/box.dart';
 import 'package:main_project/data_model/data_model.dart';
+import 'package:main_project/db_functions/db_functions.dart';
+import 'package:main_project/screens/customer_details.dart';
 import 'package:main_project/widgets/custom_text.dart';
 import 'package:main_project/widgets/customcolors.dart';
 
 class CustomerList extends StatelessWidget {
-  const CustomerList({super.key});
+  const CustomerList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: CustomColor.black,
-        title: const Padding(
-          padding: EdgeInsets.only(left:80.0),
-          child: CustomText(
-            textContent: 'Customer List',
-            textColor: CustomColor.white,
-            fontSize: 18,
-          ),
-        ),
-        iconTheme: const IconThemeData(color: CustomColor.white),
-      ),
       backgroundColor: CustomColor.primary,
       body: ValueListenableBuilder<Box<CustomerDetailsModel>>(
           valueListenable: Boxes.getcustomerdetails().listenable(),
@@ -49,51 +39,36 @@ class CustomerList extends StatelessWidget {
                       bottom: isLastitem ? 75 : 0,
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.all(2),
+                      padding: const EdgeInsets.all(1),
                       child: Card(
-                        color: Colors.white,
-                        elevation: 2,
-                        child: SizedBox(
-                          height: 120,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 10.0),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                //=============================== Customer image
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          left:2, top: 10),
-                                      child: Container(
-                                        width: 100,
-                                        height: 100,
-                                        //color: CustomColor.green
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                          image: DecorationImage(
-                                            image: FileImage(
-                                              File(data[index].CustomerImage),
-                                            ),
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      ),
+                        color: CustomColor.white,
+                        elevation: 10,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Container(
+                                height: 120,
+                                width: 120,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(2),
+                                  image: DecorationImage(
+                                    image: FileImage(
+                                      File(data[index].CustomerImage),
                                     ),
-                                  ],
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
-                                //=================================Customer name
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 10.0),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
+                              ),
+                              //===========================================Name
+                              Column(
+                                children: [
+                                  Row(
                                     children: [
                                       SizedBox(
-                                        width: 150,
                                         height: 30,
+                                        width: 220,
                                         child: Text(
                                           data[index].customerName,
                                           style: const TextStyle(
@@ -102,40 +77,89 @@ class CustomerList extends StatelessWidget {
                                           ),
                                         ),
                                       ),
-                                      //==========================Licence Number
+                                    ],
+                                  ),
+                                  //==============================Licence Number
+                                  Row(
+                                    children: [
                                       SizedBox(
-                                        width: 150,
                                         height: 30,
+                                        width: 220,
                                         child: Text(
                                           data[index].LicenceNumber,
                                           style: const TextStyle(
                                             fontSize: 18,
                                           ),
                                         ),
-                                      ),
-                                      //===========================Mobile Number
+                                      )
+                                    ],
+                                  ),
+                                  //==============================Mobile Number
+                                  Row(
+                                    children: [
                                       SizedBox(
                                         height: 30,
-                                        width: 150,
-                                        child: SizedBox(
-                                          width: 150,
-                                          height: 30,
-                                          child: Text(
-                                            data[index].mobilNumber,
-                                            style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 22,
-                                            ),
+                                        width: 220,
+                                        child: Text(
+                                          data[index].mobilNumber,
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 22,
                                           ),
                                         ),
                                       ),
                                     ],
                                   ),
-                                ),
-                              ],
-                            
-                            ),
-
+                                  //=============================vehicle Number
+                                  const Row(
+                                    children: [
+                                      SizedBox(
+                                        height: 30,
+                                        width: 220,
+                                        //color: CustomColor.red,
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              const Gap(10),
+                              //===========================================Edit
+                              Column(
+                                children: [
+                                  SizedBox(
+                                    height: 30,
+                                    width: 30,
+                                    child: IconButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                CustomerDetails(
+                                              Customer: data[index],
+                                            ),
+                                          ),
+                                        ).then((data) {
+                                          if(data != null){
+                                            getAllCustomers();
+                                          }
+                                        });
+                                      },
+                                      icon: const Icon(Icons.edit),
+                                    ),
+                                  ),
+                                  const Gap(50),
+                                  SizedBox(
+                                    width: 30,
+                                    height: 30,
+                                    child: IconButton(
+                                      onPressed: () {},
+                                      icon: const Icon(Icons.delete),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                         ),
                       ),

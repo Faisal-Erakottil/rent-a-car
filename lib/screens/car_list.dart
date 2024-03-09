@@ -17,7 +17,7 @@ class VehicleList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black12,
+      backgroundColor: CustomColor.primary,
       body: ValueListenableBuilder<Box<vehicleDetailsModel>>(
         valueListenable: Boxes.getvehicleData().listenable(),
         builder: (context, box, _) {
@@ -77,8 +77,8 @@ class VehicleList extends StatelessWidget {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) =>
-                                                const AddVehicle(),
+                                            builder: (context) => AddVehicle(
+                                                vehicle: data[index]),
                                           ),
                                         );
                                       },
@@ -88,12 +88,12 @@ class VehicleList extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-                              //=========================================Delete
+                                  //=========================================Delete
                                   SizedBox(
                                     height: 50,
                                     width: 30,
                                     //color: CustomColor.black,
-                                     child: IconButton(
+                                    child: IconButton(
                                       onPressed: () {
                                         showDialog(
                                           context: context,
@@ -115,19 +115,23 @@ class VehicleList extends StatelessWidget {
                                                 //=============Cancel
                                                 customElevatedButton(
                                                     onPressed: () {
-                                                      Navigator.of(context).pop();
+                                                      Navigator.of(context)
+                                                          .pop();
                                                     },
                                                     label: "CANCEL",
-                                                    labelColor: CustomColor.black,
+                                                    labelColor:
+                                                        CustomColor.black,
                                                     backgroundColor:
                                                         CustomColor.green),
                                                 //============Delete
                                                 customElevatedButton(
                                                     onPressed: () {
-                                                      final box =
-                                                          Boxes.getvehicleData();
-                                                      box.delete(data[index].key);
-                                                      Navigator.of(context).pop();
+                                                      final box = Boxes
+                                                          .getvehicleData();
+                                                      box.delete(
+                                                          data[index].key);
+                                                      Navigator.of(context)
+                                                          .pop();
                                                     },
                                                     backgroundColor:
                                                         CustomColor.red,
@@ -141,7 +145,6 @@ class VehicleList extends StatelessWidget {
                                       },
                                       icon: const Icon(Icons.delete),
                                     ),
-
                                   )
                                 ],
                               ),
@@ -192,11 +195,26 @@ class VehicleList extends StatelessWidget {
                                     height: 35,
                                     child: customElevatedButton(
                                         onPressed: () {
+                                          final customerDetails =
+                                              CustomerDetailsModel(
+                                            customerName:'',
+                                               // data[index].vehiclename,
+                                            mobilNumber:'', // Add properties here
+                                            LicenceNumber:'',
+                                            Email:'', 
+                                            days:'', 
+                                            reading:'', 
+                                            advance:'', 
+                                            CustomerImage:'',
+                                          );
+
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) =>
-                                                  const CustomerDetails(),
+                                                  CustomerDetails(
+                                                      Customer:
+                                                          customerDetails),
                                             ),
                                           );
                                         },
@@ -256,4 +274,3 @@ class VehicleList extends StatelessWidget {
     );
   }
 }
-                             

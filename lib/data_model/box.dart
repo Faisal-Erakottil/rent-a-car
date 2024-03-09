@@ -11,5 +11,3 @@ class Boxes {
   static Box<CustomerDetailsModel> getcustomerdetails() =>
       Hive.box<CustomerDetailsModel>('customer_db');
 }
-
-

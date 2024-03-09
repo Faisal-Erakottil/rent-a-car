@@ -1,6 +1,7 @@
 // ignore_for_file: use_key_in_widget_constructors, must_be_immutable, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
+import 'package:main_project/widgets/customcolors.dart';
 
 //==========================================text class
 
@@ -59,16 +60,14 @@ Widget textforms({
   dynamic validater,
   required dynamic message,
   TextInputType keyboardType = TextInputType.text,
+  Icon? prefixIcon,
 }) {
   return TextFormField(
     controller: controler,
     style: const TextStyle(color: Colors.white),
     keyboardType: keyboardType,
     decoration: InputDecoration(
-      prefixIcon: const Icon(
-        Icons.person,
-        color: Colors.white,
-      ),
+      prefixIcon:prefixIcon,iconColor: CustomColor.white,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
       ),

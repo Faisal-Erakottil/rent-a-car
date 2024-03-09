@@ -12,12 +12,33 @@ import 'package:main_project/widgets/custom_text_field.dart';
 import 'package:main_project/widgets/customcolors.dart';
 
 class AddVehicle extends StatefulWidget {
-  const AddVehicle({super.key});
+  final vehicleDetailsModel? vehicle;
+  const AddVehicle({Key? key, this.vehicle}) : super(key: key);
   @override
   State<AddVehicle> createState() => AddVehicleState();
 }
 
 class AddVehicleState extends State<AddVehicle> {
+  @override
+void initState() {
+  super.initState();
+  if (widget.vehicle != null) {
+    // Populate fields with vehicle details
+    vehiclenameController.text = widget.vehicle!.vehiclename;
+    vehicleRegController.text = widget.vehicle!.vehiclereg;
+    vehicleRentController.text = widget.vehicle!.rent;
+    // Update selectedFuel and selectedSeat
+    selectedFuel = widget.vehicle!.fueltype;
+    selectedSeat = widget.vehicle!.seates;
+    // Set imagepath if vehicle has an image
+    if (widget.vehicle!.carimage.isNotEmpty) {
+      setState(() {
+        imagepath = File(widget.vehicle!.carimage);
+      });
+    }
+  }
+}
+
   final vehiclenameController = TextEditingController();
   final vehicleRegController = TextEditingController();
   final vehicleRentController = TextEditingController();

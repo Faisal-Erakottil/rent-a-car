@@ -1,9 +1,10 @@
-// ignore_for_file: no_leading_underscores_for_local_identifiers, non_constant_identifier_names
+// ignore_for_file: no_leading_underscores_for_local_identifiers, non_constant_identifier_names, unnecessary_null_comparison
 
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:main_project/data_model/box.dart';
 import 'package:main_project/data_model/data_model.dart';
 import 'package:main_project/screens/home_screen.dart';
@@ -12,7 +13,8 @@ import 'package:main_project/widgets/custom_text_field.dart';
 import 'package:main_project/widgets/customcolors.dart';
 
 class CustomerDetails extends StatefulWidget {
-  const CustomerDetails({super.key});
+  final CustomerDetailsModel? Customer;
+  const CustomerDetails({Key? key, this.Customer}) : super(key: key);
 
   @override
   State<CustomerDetails> createState() => _CustomerDetailsState();
@@ -24,6 +26,7 @@ class _CustomerDetailsState extends State<CustomerDetails> {
   var licenseNumberControler = TextEditingController();
   var emailController = TextEditingController();
   var dayCountController = TextEditingController();
+  var pickupDate = TextEditingController();
   var meaterReadingController = TextEditingController();
   var advanceController = TextEditingController();
   File? imagepath;
@@ -36,6 +39,21 @@ class _CustomerDetailsState extends State<CustomerDetails> {
   bool validateDayCount = false;
   bool validateMeaterReading = false;
   bool validateadvance = false;
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  //=============function to update
+  void initState() {
+    super.initState();
+    if (widget.Customer != null) {
+      nameController.text = widget.Customer!.customerName;
+      mobController.text = widget.Customer!.mobilNumber;
+      licenseNumberControler.text = widget.Customer!.LicenceNumber;
+      emailController.text = widget.Customer!.Email;
+      dayCountController.text = widget.Customer!.days;
+      meaterReadingController.text = widget.Customer!.reading;
+      advanceController.text = widget.Customer!.advance;
+      selectedImage = widget.Customer!.CustomerImage;
+    }
+  }
 
   //===function for selecting image
   Future pickImageFromGallery() async {
@@ -56,7 +74,7 @@ class _CustomerDetailsState extends State<CustomerDetails> {
       appBar: AppBar(
         backgroundColor: Colors.black,
         title: const Padding(
-          padding: EdgeInsets.all(86.0),
+          padding: EdgeInsets.all(65.0),
           child: CustomText(
             textContent: "Customer Details",
             textColor: Colors.white,
@@ -79,10 +97,10 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                 child: Center(
                   child: CircleAvatar(
                     backgroundColor: Colors.black,
-                    radius: 85,
+                    radius: 75,
                     child: imagepath != null
                         ? ClipRRect(
-                            borderRadius: BorderRadius.circular(85),
+                            borderRadius: BorderRadius.circular(75),
                             child: Image.file(
                               imagepath!,
                               width: 170,
@@ -102,6 +120,10 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                 children: [
                   //================= Name field
                   textforms(
+                      prefixIcon: const Icon(
+                        Icons.abc,
+                        color: CustomColor.white,
+                      ),
                       fieldname: "Name",
                       message: "Name is Empty",
                       controler: nameController,
@@ -110,6 +132,10 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                   const Gap(10),
                   //================== Mobils Number
                   textforms(
+                      prefixIcon: const Icon(
+                        Icons.phone_iphone,
+                        color: CustomColor.white,
+                      ),
                       fieldname: "Mobile Number",
                       message: "Mobile Number is Empty",
                       controler: mobController,
@@ -118,6 +144,10 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                   const Gap(10),
                   //=====================LicenseNumber
                   textforms(
+                    prefixIcon: const Icon(
+                      Icons.numbers,
+                      color: CustomColor.white,
+                    ),
                     fieldname: "License Number",
                     message: "License Number is Empty",
                     controler: licenseNumberControler,
@@ -126,6 +156,10 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                   const Gap(10),
                   //================== Email ID
                   textforms(
+                    prefixIcon: const Icon(
+                      Icons.email,
+                      color: CustomColor.white,
+                    ),
                     fieldname: "Email ID",
                     message: "Email ID is Empty",
                     controler: emailController,
@@ -135,6 +169,10 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                   const Gap(10),
                   //===================day count
                   textforms(
+                    prefixIcon: const Icon(
+                      Icons.numbers,
+                      color: CustomColor.white,
+                    ),
                     fieldname: "Number of days",
                     message: "Number of days is Empty",
                     controler: dayCountController,
@@ -142,8 +180,50 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                     keyboardType: TextInputType.number,
                   ),
                   const Gap(10),
+                  //===================== pickupdate
+                  TextFormField(
+                    decoration: InputDecoration(
+                      prefixIcon: const Icon(
+                        Icons.calendar_month,
+                        color: Colors.white,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      filled: true,
+                      fillColor: const Color.fromARGB(255, 38, 38, 42),
+                      labelText: "pickup Date",
+                    ),
+                    controller: pickupDate,
+                    style: const TextStyle(color: Colors.white),
+                    onTap: () async {
+                      DateTime currentDate = DateTime.now();
+                      DateTime? pickedDate = await showDatePicker(
+                        context: context,
+                        initialDate: currentDate,
+                        firstDate: currentDate,
+                        lastDate: DateTime(2050),
+                      );
+                      if (pickupDate != null) {
+                        pickupDate.text =
+                            DateFormat('dd-MM-yyyy').format(pickedDate!);
+                        formKey.currentState?.validate();
+                      }
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please pick a date';
+                      }
+                      return null;
+                    },
+                  ),
+                  const Gap(10),
                   //=================== odomeater reading
                   textforms(
+                    prefixIcon: const Icon(
+                      Icons.directions_car,
+                      color: CustomColor.white,
+                    ),
                     fieldname: "Odo Meater Reading",
                     message: "meater reading is Empty",
                     controler: meaterReadingController,
@@ -153,6 +233,10 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                   const Gap(10),
                   //===================Advance amount
                   textforms(
+                      prefixIcon: const Icon(
+                        Icons.currency_rupee,
+                        color: CustomColor.white,
+                      ),
                       fieldname: "Advance amount",
                       message: "Advance amount is Emty",
                       controler: advanceController,
@@ -289,7 +373,7 @@ class _CustomerDetailsState extends State<CustomerDetails> {
     final advance = advanceController.text.trim();
     final image = imagepath?.path;
 
-    // Save the input data to Hive
+    // Saving the input data to Hive
     final CustomerDetails = CustomerDetailsModel(
       customerName: name,
       mobilNumber: mobile,
@@ -302,8 +386,8 @@ class _CustomerDetailsState extends State<CustomerDetails> {
     );
     final box = Boxes.getcustomerdetails();
     box.put('customer_db', CustomerDetails);
-  
-    // Navigate back to the HomeScreen or perform any other action
-    Navigator.pop(context);
+
+    // back to the HomeScreen
+    //Navigator.pop(context);
   }
 }
