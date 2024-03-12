@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:main_project/data_model/box.dart';
 import 'package:main_project/data_model/data_model.dart';
+import 'package:main_project/screens/customer.dart';
 import 'package:main_project/screens/home_screen.dart';
 import 'package:main_project/widgets/custom_text.dart';
 import 'package:main_project/widgets/custom_text_field.dart';
@@ -301,7 +302,7 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const HomeScreen(),
+                          builder: (context) => const Customer(),
                         ),
                       );
                     },
@@ -391,3 +392,5 @@ class _CustomerDetailsState extends State<CustomerDetails> {
     //Navigator.pop(context);
   }
 }
+
+                   

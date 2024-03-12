@@ -1,4 +1,5 @@
-// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: non_constant_identifier_names, unused_local_variable
+
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -19,26 +20,6 @@ class AddVehicle extends StatefulWidget {
 }
 
 class AddVehicleState extends State<AddVehicle> {
-  @override
-void initState() {
-  super.initState();
-  if (widget.vehicle != null) {
-    // Populate fields with vehicle details
-    vehiclenameController.text = widget.vehicle!.vehiclename;
-    vehicleRegController.text = widget.vehicle!.vehiclereg;
-    vehicleRentController.text = widget.vehicle!.rent;
-    // Update selectedFuel and selectedSeat
-    selectedFuel = widget.vehicle!.fueltype;
-    selectedSeat = widget.vehicle!.seates;
-    // Set imagepath if vehicle has an image
-    if (widget.vehicle!.carimage.isNotEmpty) {
-      setState(() {
-        imagepath = File(widget.vehicle!.carimage);
-      });
-    }
-  }
-}
-
   final vehiclenameController = TextEditingController();
   final vehicleRegController = TextEditingController();
   final vehicleRentController = TextEditingController();
@@ -48,6 +29,24 @@ void initState() {
   String? selectedFuel;
   String? selectedSeat;
   final formKey = GlobalKey<FormState>();
+  
+  @override
+  void initState() {
+    super.initState();
+    if (widget.vehicle != null) {
+      vehiclenameController.text = widget.vehicle!.vehiclename;
+      vehicleRegController.text = widget.vehicle!.vehiclereg;
+      vehicleRentController.text = widget.vehicle!.rent;
+      selectedFuel = widget.vehicle!.fueltype;
+      selectedSeat = widget.vehicle!.seates;
+      if (widget.vehicle!.carimage.isNotEmpty) {
+        setState(() {
+          imagepath = File(widget.vehicle!.carimage);
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,7 +77,7 @@ void initState() {
               ),
               child: GestureDetector(
                 onTap: () {
-                  pickImageFromGallery();
+                  pickImageFromGallery;
                 },
                 child: Container(
                   height: 180,
@@ -267,7 +266,11 @@ void initState() {
     );
 
     // Save to database
-    addCar(cars);
+    if (widget.vehicle == null) {
+      addCar(cars);
+    } else {
+      int id = widget.vehicle?.id??-1;
+    }
     // Clear text fields and reset state
     vehiclenameController.clear();
     vehicleRegController.clear();
@@ -278,5 +281,12 @@ void initState() {
 
     // Navigate back
     Navigator.pop(context);
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HomeScreen(
+            updatedVehicle: cars,
+          ),
+        ));
   }
 }

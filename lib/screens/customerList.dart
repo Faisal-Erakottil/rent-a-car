@@ -1,17 +1,17 @@
+// ignore_for_file: file_names
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:main_project/data_model/box.dart';
 import 'package:main_project/data_model/data_model.dart';
-import 'package:main_project/db_functions/db_functions.dart';
 import 'package:main_project/screens/customer_details.dart';
 import 'package:main_project/widgets/custom_text.dart';
 import 'package:main_project/widgets/customcolors.dart';
 
 class CustomerList extends StatelessWidget {
-  const CustomerList({Key? key}) : super(key: key);
+  final vehicleDetailsModel? updatedCustumer;
+  const CustomerList({Key? key, this.updatedCustumer}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +21,9 @@ class CustomerList extends StatelessWidget {
           valueListenable: Boxes.getcustomerdetails().listenable(),
           builder: (context, box, _) {
             var data = box.values.toList().cast<CustomerDetailsModel>();
+            if (updatedCustumer != null) {
+              List<CustomerDetailsModel> index = data;
+            }
             if (data.isEmpty) {
               return const Center(
                 child: CustomText(
@@ -140,8 +143,8 @@ class CustomerList extends StatelessWidget {
                                             ),
                                           ),
                                         ).then((data) {
-                                          if(data != null){
-                                            getAllCustomers();
+                                          if (data != null) {
+                                            //getAllCustomers();
                                           }
                                         });
                                       },

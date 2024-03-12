@@ -1,6 +1,4 @@
 // ignore_for_file: non_constant_identifier_names, no_leading_underscores_for_local_identifiers
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:main_project/data_model/data_model.dart';
@@ -35,7 +33,7 @@ Future<void> addCar(vehicleDetailsModel value) async {
   vehiclenotifer.notifyListeners();
 }
 
-//======================================Getting from box
+//======================================Getting vehicle Details from box
 Future<void> getVehicleDetails() async {
   final vehicleDB = await Hive.openBox<vehicleDetailsModel>('vehicle_db');
   vehiclenotifer.value.clear();
@@ -50,6 +48,22 @@ Future<void> deletVehicle(int id) async {
   getVehicleDetails();
 }
 
+//======================================update vehicle
+Future<void> UpdateVehicle(vehicleDetailsModel updatedVehicle) async {
+  final vehicleDB = await Hive.openBox<vehicleDetailsModel>('vehicle_db');
+  if (vehicleDB.containsKey(updatedVehicle.key)) {
+    await vehicleDB.put(updatedVehicle.key, updatedVehicle);
+    getVehicleDetails();
+  }
+}
+//=========================================update customer
+Future<void> UpdateCustomer(CustomerDetailsModel updatedCustomer) async {
+  final CustomerDB = await Hive.openBox<CustomerDetailsModel>("ustomer_db");
+  if (CustomerDB.containsKey(updatedCustomer.key)) {
+    await CustomerDB.put(updatedCustomer.key, updatedCustomer);
+    getAllCustomers();
+  }
+}
 //=====================================adding Customer
 Future<void> addcustomer(CustomerDetailsModel value) async {
   final customerDB = await Hive.openBox<CustomerDetailsModel>("customer_db");
@@ -59,10 +73,12 @@ Future<void> addcustomer(CustomerDetailsModel value) async {
   customerListNotifier.notifyListeners();
 }
 
-//======================================get all Customers
+//======================================Customer Details from Box
 Future<void> getAllCustomers() async {
   final customerDB = await Hive.openBox<CustomerDetailsModel>("customer_db");
   customerListNotifier.value.clear();
   customerListNotifier.value.addAll(customerDB.values);
   customerListNotifier.notifyListeners();
 }
+
+

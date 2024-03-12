@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:main_project/data_model/data_model.dart';
 import 'package:main_project/screens/customer.dart';
-import 'package:main_project/screens/customerList.dart';
 import 'package:main_project/screens/help&info.dart';
 import 'package:main_project/screens/revenue.dart';
 import 'package:main_project/screens/userdetails.dart';

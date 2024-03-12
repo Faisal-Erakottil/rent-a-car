@@ -55,6 +55,8 @@ class vehicleDetailsModel extends HiveObject {
   });
 
   set isRented(bool isRented) {}
+
+ 
 }
 
 //=====================================Customer Details

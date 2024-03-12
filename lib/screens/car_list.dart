@@ -6,13 +6,14 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:main_project/data_model/box.dart';
 import 'package:main_project/data_model/data_model.dart';
 import 'package:main_project/screens/add_vehicle.dart';
-import 'package:main_project/screens/customer_details.dart';
+import 'package:main_project/screens/customer.dart';
 import 'package:main_project/widgets/custom_button.dart';
 import 'package:main_project/widgets/custom_text.dart';
 import 'package:main_project/widgets/customcolors.dart';
 
 class VehicleList extends StatelessWidget {
-  const VehicleList({Key? key}) : super(key: key);
+  final vehicleDetailsModel? updatedVehicle;
+  const VehicleList({Key? key, this.updatedVehicle}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +23,14 @@ class VehicleList extends StatelessWidget {
         valueListenable: Boxes.getvehicleData().listenable(),
         builder: (context, box, _) {
           var data = box.values.toList().cast<vehicleDetailsModel>();
+          if (updatedVehicle != null) {
+            int index =
+                data.indexWhere((vehicle) => vehicle.id == updatedVehicle?.id);
+            if (index != -1) {
+              data[index] = updatedVehicle!;
+            }
+          }
+
           if (data.isEmpty) {
             return const Center(
               child: CustomText(
@@ -195,26 +204,10 @@ class VehicleList extends StatelessWidget {
                                     height: 35,
                                     child: customElevatedButton(
                                         onPressed: () {
-                                          final customerDetails =
-                                              CustomerDetailsModel(
-                                            customerName:'',
-                                               // data[index].vehiclename,
-                                            mobilNumber:'', // Add properties here
-                                            LicenceNumber:'',
-                                            Email:'', 
-                                            days:'', 
-                                            reading:'', 
-                                            advance:'', 
-                                            CustomerImage:'',
-                                          );
-
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) =>
-                                                  CustomerDetails(
-                                                      Customer:
-                                                          customerDetails),
+                                              builder: (context) => const Customer(),
                                             ),
                                           );
                                         },
@@ -223,6 +216,7 @@ class VehicleList extends StatelessWidget {
                                         backgroundColor: CustomColor.green),
                                   ),
                                 ),
+                                //================================
                               ],
                             ),
                             Padding(

@@ -1,7 +1,5 @@
 // ignore_for_file: non_constant_identifier_names, unused_field
 
-//import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:main_project/data_model/box.dart';
 import 'package:main_project/data_model/data_model.dart';
@@ -14,7 +12,8 @@ import 'package:main_project/widgets/custom_text.dart';
 import 'package:main_project/widgets/customcolors.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  final vehicleDetailsModel? updatedVehicle;
+  const HomeScreen({Key? key, this.updatedVehicle}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
