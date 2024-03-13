@@ -381,9 +381,9 @@ class _CustomerDetailsState extends State<CustomerDetails> {
       LicenceNumber: LicenceNumber,
       Email: email,
       days: days,
-      reading: reading,
+      reading: MeaterReading,
       advance: advance,
-      CustomerImage: image!,
+      CustomerImage: imagePath,
     );
     final box = Boxes.getcustomerdetails();
     box.put('customer_db', CustomerDetails);
