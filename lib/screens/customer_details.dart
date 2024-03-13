@@ -1,396 +1,229 @@
-// ignore_for_file: no_leading_underscores_for_local_identifiers, non_constant_identifier_names, unnecessary_null_comparison
 
 import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
-import 'package:main_project/data_model/box.dart';
 import 'package:main_project/data_model/data_model.dart';
-import 'package:main_project/screens/customer.dart';
-import 'package:main_project/screens/home_screen.dart';
+import 'package:main_project/db_functions/db_functions.dart';
+import 'package:main_project/widgets/custom_button.dart';
 import 'package:main_project/widgets/custom_text.dart';
 import 'package:main_project/widgets/custom_text_field.dart';
 import 'package:main_project/widgets/customcolors.dart';
+import 'package:main_project/widgets/image_selection.dart';
 
 class CustomerDetails extends StatefulWidget {
-  final CustomerDetailsModel? Customer;
-  const CustomerDetails({Key? key, this.Customer}) : super(key: key);
+  final CustomerDetailsModel? customer;
+
+  const CustomerDetails({Key? key, this.customer}) : super(key: key);
 
   @override
   State<CustomerDetails> createState() => _CustomerDetailsState();
 }
 
 class _CustomerDetailsState extends State<CustomerDetails> {
-  var nameController = TextEditingController();
-  var mobController = TextEditingController();
-  var licenseNumberControler = TextEditingController();
-  var emailController = TextEditingController();
-  var dayCountController = TextEditingController();
-  var pickupDate = TextEditingController();
-  var meaterReadingController = TextEditingController();
-  var advanceController = TextEditingController();
-  File? imagepath;
-  String? selectedImage;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _mobController = TextEditingController();
+  final TextEditingController _licenseNumberController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _dayCountController = TextEditingController();
+  final TextEditingController _meaterReadingController = TextEditingController();
+  final TextEditingController _advanceController = TextEditingController();
+  String _imgPath = "";
 
-  bool validateName = false;
-  bool validateMobileNumber = false;
-  bool validateLicenseNumber = false;
-  bool validateEmail = false;
-  bool validateDayCount = false;
-  bool validateMeaterReading = false;
-  bool validateadvance = false;
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  //=============function to update
+  @override
   void initState() {
     super.initState();
-    if (widget.Customer != null) {
-      nameController.text = widget.Customer!.customerName;
-      mobController.text = widget.Customer!.mobilNumber;
-      licenseNumberControler.text = widget.Customer!.LicenceNumber;
-      emailController.text = widget.Customer!.Email;
-      dayCountController.text = widget.Customer!.days;
-      meaterReadingController.text = widget.Customer!.reading;
-      advanceController.text = widget.Customer!.advance;
-      selectedImage = widget.Customer!.CustomerImage;
-    }
-  }
-
-  //===function for selecting image
-  Future pickImageFromGallery() async {
-    final returnedImage =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (returnedImage != null) {
-      setState(() {
-        imagepath = File(returnedImage.path);
-        selectedImage = returnedImage.path;
-      });
+    if (widget.customer != null) {
+      _nameController.text = widget.customer!.customerName;
+      _mobController.text = widget.customer!.mobilNumber;
+      _licenseNumberController.text = widget.customer!.LicenceNumber;
+      _emailController.text = widget.customer!.Email;
+      _dayCountController.text = widget.customer!.days;
+      _meaterReadingController.text = widget.customer!.reading;
+      _advanceController.text = widget.customer!.advance;
+      _imgPath = widget.customer!.CustomerImage;
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 29, 29, 31),
+      backgroundColor: CustomColor.primary,
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: CustomColor.black,
         title: const Padding(
-          padding: EdgeInsets.all(65.0),
+          padding: EdgeInsets.only(left: 60.0),
           child: CustomText(
             textContent: "Customer Details",
-            textColor: Colors.white,
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
+            textColor: CustomColor.white,
+            fontSize: 20,
           ),
         ),
-        iconTheme: const IconThemeData(
-          color: CustomColor.white,
-        ),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
-      //=============== image picker
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            children: [
-              GestureDetector(
-                onTap: pickImageFromGallery,
-                child: Center(
-                  child: CircleAvatar(
-                    backgroundColor: Colors.black,
-                    radius: 75,
-                    child: imagepath != null
-                        ? ClipRRect(
-                            borderRadius: BorderRadius.circular(75),
-                            child: Image.file(
-                              imagepath!,
-                              width: 170,
-                              height: 170,
-                              fit: BoxFit.cover,
-                            ))
-                        : const Icon(
-                            Icons.add_a_photo,
-                            color: Colors.white,
-                            size: 50,
-                          ),
-                  ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                ImageSelectionWidget(
+                  onImageSelected: (File? pickedImage, String? pickedImagePath) {
+                    setState(() {
+                      _imgPath = pickedImagePath ?? "";
+                    });
+                  },
+                  initialImagePath: _imgPath.isNotEmpty ? _imgPath : null,
                 ),
-              ),
-              const Gap(10),
-              Column(
-                children: [
-                  //================= Name field
-                  textforms(
-                      prefixIcon: const Icon(
-                        Icons.abc,
-                        color: CustomColor.white,
-                      ),
-                      fieldname: "Name",
-                      message: "Name is Empty",
-                      controler: nameController,
-                      validater: validateName,
-                      keyboardType: TextInputType.text),
-                  const Gap(10),
-                  //================== Mobils Number
-                  textforms(
-                      prefixIcon: const Icon(
-                        Icons.phone_iphone,
-                        color: CustomColor.white,
-                      ),
-                      fieldname: "Mobile Number",
-                      message: "Mobile Number is Empty",
-                      controler: mobController,
-                      validater: validateMobileNumber,
-                      keyboardType: TextInputType.phone),
-                  const Gap(10),
-                  //=====================LicenseNumber
-                  textforms(
-                    prefixIcon: const Icon(
-                      Icons.numbers,
-                      color: CustomColor.white,
-                    ),
-                    fieldname: "License Number",
-                    message: "License Number is Empty",
-                    controler: licenseNumberControler,
-                    validater: validateLicenseNumber,
-                  ),
-                  const Gap(10),
-                  //================== Email ID
-                  textforms(
-                    prefixIcon: const Icon(
-                      Icons.email,
-                      color: CustomColor.white,
-                    ),
-                    fieldname: "Email ID",
-                    message: "Email ID is Empty",
-                    controler: emailController,
-                    validater: validateEmail,
-                    keyboardType: TextInputType.emailAddress,
-                  ),
-                  const Gap(10),
-                  //===================day count
-                  textforms(
-                    prefixIcon: const Icon(
-                      Icons.numbers,
-                      color: CustomColor.white,
-                    ),
-                    fieldname: "Number of days",
-                    message: "Number of days is Empty",
-                    controler: dayCountController,
-                    validater: validateDayCount,
-                    keyboardType: TextInputType.number,
-                  ),
-                  const Gap(10),
-                  //===================== pickupdate
-                  TextFormField(
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(
-                        Icons.calendar_month,
-                        color: Colors.white,
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      filled: true,
-                      fillColor: const Color.fromARGB(255, 38, 38, 42),
-                      labelText: "pickup Date",
-                    ),
-                    controller: pickupDate,
-                    style: const TextStyle(color: Colors.white),
-                    onTap: () async {
-                      DateTime currentDate = DateTime.now();
-                      DateTime? pickedDate = await showDatePicker(
-                        context: context,
-                        initialDate: currentDate,
-                        firstDate: currentDate,
-                        lastDate: DateTime(2050),
-                      );
-                      if (pickupDate != null) {
-                        pickupDate.text =
-                            DateFormat('dd-MM-yyyy').format(pickedDate!);
-                        formKey.currentState?.validate();
-                      }
-                    },
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please pick a date';
-                      }
-                      return null;
-                    },
-                  ),
-                  const Gap(10),
-                  //=================== odomeater reading
-                  textforms(
-                    prefixIcon: const Icon(
-                      Icons.directions_car,
-                      color: CustomColor.white,
-                    ),
-                    fieldname: "Odo Meater Reading",
-                    message: "meater reading is Empty",
-                    controler: meaterReadingController,
-                    validater: validateMeaterReading,
-                    keyboardType: TextInputType.number,
-                  ),
-                  const Gap(10),
-                  //===================Advance amount
-                  textforms(
-                      prefixIcon: const Icon(
-                        Icons.currency_rupee,
-                        color: CustomColor.white,
-                      ),
-                      fieldname: "Advance amount",
-                      message: "Advance amount is Emty",
-                      controler: advanceController,
-                      validater: validateadvance,
-                      keyboardType: TextInputType.number),
-                  const Gap(10),
-                  //================== save Button
-                  ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      backgroundColor: Colors.blue,
-                    ),
-                    onPressed: () {
-                      saveDetails();
-                      setState(() {
-                        nameController.text.isEmpty
-                            ? validateName = true
-                            : validateName = false;
-                        mobController.text.isEmpty
-                            ? validateMobileNumber = true
-                            : validateMobileNumber = false;
-                        licenseNumberControler.text.isEmpty
-                            ? validateLicenseNumber = true
-                            : validateLicenseNumber = false;
-                        emailController.text.isEmpty
-                            ? validateEmail = true
-                            : validateEmail = false;
-                        dayCountController.text.isEmpty
-                            ? validateDayCount = true
-                            : validateDayCount = false;
-                        meaterReadingController.text.isEmpty
-                            ? validateMeaterReading = false
-                            : validateMeaterReading = true;
-                        advanceController.text.isEmpty
-                            ? validateDayCount
-                            : validateadvance;
-                        imagepath = null;
-                      });
-                      if (validateName == false &&
-                          validateMobileNumber == false &&
-                          validateEmail == false &&
-                          validateLicenseNumber == false &&
-                          validateDayCount == false &&
-                          validateMeaterReading == false &&
-                          validateadvance == false &&
-                          selectedImage != null) {
-                        CustomerDetailsModel(
-                          customerName: nameController.text,
-                          mobilNumber: mobController.text,
-                          LicenceNumber: licenseNumberControler.text,
-                          Email: emailController.text,
-                          days: dayCountController.text,
-                          reading: meaterReadingController.text,
-                          advance: advanceController.text,
-                          CustomerImage: imagepath?.path ?? "",
-                        );
-                      }
-
-                      onAddSaveButtonClicked();
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const Customer(),
-                        ),
-                      );
-                    },
-                    icon: const Icon(
-                      Icons.save,
-                      color: Colors.white,
-                    ),
-                    label: const Text(
-                      "Save",
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  //==================
-                ],
-              )
-            ],
+                //========================================================Name
+                CustomTextField(
+                  controller: _nameController,
+                  fieldName: "Name",
+                  labelText: "Name",
+                  keyboardType: TextInputType.name,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Name is required";
+                    }
+                    return null;
+                  }, prefixIcon: Icons.abc,
+                ),
+                const SizedBox(height: 10),
+                //===============================================Mobile Number
+                CustomTextField(
+                  labelText: "Mobile Number",
+                  fieldName: 'Mobile Number',
+                  controller: _mobController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Mobile Number is required";
+                    }
+                    return null;
+                  },
+                  prefixIcon: Icons.phone_iphone,
+                ),
+                const SizedBox(height: 10),
+                //================================================License Number
+                CustomTextField(
+                  labelText: "License Number",
+                  fieldName: "License Number",
+                  controller: _licenseNumberController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "License Number is required";
+                    }
+                    return null;
+                  },
+                  prefixIcon: Icons.badge,
+                ),
+                const SizedBox(height: 10),
+                //======================================================Email ID
+                CustomTextField(
+                  labelText: "Email ID",
+                  fieldName: "Email ID",
+                  controller: _emailController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Email ID is required";
+                    }
+                    return null;
+                  }, prefixIcon: Icons.email,
+                ),
+                const SizedBox(height: 10),
+                //================================================Number of Days
+                CustomTextField(
+                  labelText: "Number of Days",
+                  fieldName: "Number of Days",
+                  controller: _dayCountController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Number of days is required";
+                    }
+                    return null;
+                  }, prefixIcon: Icons.today,
+                ),
+                const SizedBox(height: 10),
+                //================================================Meater Reading
+                CustomTextField(
+                  labelText: "Meater Reading",
+                  fieldName: "Meater Reading",
+                  controller: _meaterReadingController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Meater reading is required";
+                    }
+                    return null;
+                  },prefixIcon: Icons.track_changes,
+                ),
+                const SizedBox(height: 10),
+                //===============================================Advance amount
+                CustomTextField(
+                  labelText: "Advance",
+                  fieldName: "Advance",
+                  controller: _advanceController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Advance is required";
+                    }
+                    return null;
+                  }, prefixIcon: Icons.currency_rupee,
+                ),
+                const SizedBox(height: 10),
+                //==========================================Save Details Button
+                customElevatedButton(
+                  label: "Save Detail",
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      _saveCustomerDetail();
+                    }
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  Future<void> onAddSaveButtonClicked() async {
-    final _name = nameController.text.trim();
-    final _mobile = mobController.text.trim();
-    final _LicenceNumber = licenseNumberControler.text.trim();
-    final _email = emailController.text.trim();
-    final _days = dayCountController.text.trim();
-    final _reading = meaterReadingController.text.trim();
-    final _advance = advanceController.text.trim();
+  void _saveCustomerDetail() {
+    final name = _nameController.text.trim();
+    final mobNumber = _mobController.text.trim();
+    final licenseNumber = _licenseNumberController.text.trim();
+    final email = _emailController.text.trim();
+    final days = _dayCountController.text.trim();
+    final meaterReading = _meaterReadingController.text.trim();
+    final advance = _advanceController.text.trim();
 
-    if (imagepath == null ||
-        _name.isEmpty ||
-        _mobile.isEmpty ||
-        _LicenceNumber.isEmpty ||
-        _email.isEmpty ||
-        _days.isEmpty ||
-        _reading.isEmpty ||
-        _advance.isEmpty) {
-      // Show error message or handle invalid input
+    if (name.isEmpty ||
+        mobNumber.isEmpty ||
+        licenseNumber.isEmpty ||
+        email.isEmpty ||
+        days.isEmpty ||
+        meaterReading.isEmpty ||
+        advance.isEmpty ||
+        _imgPath.isEmpty) {
       return;
     }
-    final CustomerDetails = CustomerDetailsModel(
-      customerName: _name,
-      mobilNumber: _mobile,
-      LicenceNumber: _LicenceNumber,
-      Email: _email,
-      days: _days,
-      reading: _reading,
-      advance: _advance,
-      CustomerImage: imagepath?.path ?? "",
-    );
-    //  print(userDetails);
-    // Pass the user details back to the previous screen (HomeScreen)
-    Navigator.pop(context, CustomerDetails);
-  }
 
-  Future<void> saveDetails() async {
-    onAddSaveButtonClicked();
-    final name = nameController.text.trim();
-    final mobile = mobController.text.trim();
-    final LicenceNumber = licenseNumberControler.text.trim();
-    final email = emailController.text.trim();
-    final days = dayCountController.text.trim();
-    final reading = meaterReadingController.text.trim();
-    final advance = advanceController.text.trim();
-    final image = imagepath?.path;
-
-    // Saving the input data to Hive
-    final CustomerDetails = CustomerDetailsModel(
+    final customer = CustomerDetailsModel(
       customerName: name,
-      mobilNumber: mobile,
-      LicenceNumber: LicenceNumber,
+      mobilNumber: mobNumber,
+      LicenceNumber: licenseNumber,
       Email: email,
       days: days,
-      reading: MeaterReading,
+      reading: meaterReading,
       advance: advance,
-      CustomerImage: imagePath,
+      CustomerImage: _imgPath,
     );
-    final box = Boxes.getcustomerdetails();
-    box.put('customer_db', CustomerDetails);
 
-    // back to the HomeScreen
-    //Navigator.pop(context);
+    if (widget.customer != null) {
+      customer.id = widget.customer!.key;
+      UpdateCustomer(customer);
+    } else {
+      addcustomer(customer);
+    }
+
+    Navigator.of(context).pop();
   }
 }
-
-                   

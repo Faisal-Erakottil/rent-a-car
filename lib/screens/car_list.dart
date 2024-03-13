@@ -77,7 +77,7 @@ class VehicleList extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-                                  //=========================================Edit button
+                                  //=================================Edit button
                                   SizedBox(
                                     width: 40,
                                     height: 50,
@@ -207,16 +207,37 @@ class VehicleList extends StatelessWidget {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => const Customer(),
+                                              builder: (context) =>
+                                                  const Customer(),
                                             ),
                                           );
                                         },
-                                        label: "Rent Now",
+                                        label: "RENT NOW",
                                         labelColor: CustomColor.black,
                                         backgroundColor: CustomColor.green),
                                   ),
                                 ),
-                                //================================
+                                //================================on rent button
+                                //  Padding(
+                                //   padding:
+                                //       const EdgeInsets.only(left: 45.0, top: 5),
+                                //   child: SizedBox(
+                                //     width: 120,
+                                //     height: 35,
+                                //     child: customElevatedButton(
+                                //         onPressed: () {
+                                //           Navigator.push(
+                                //             context,
+                                //             MaterialPageRoute(
+                                //               builder: (context) => const Customer(),
+                                //             ),
+                                //           );
+                                //         },
+                                //         label: "ON RENT",
+                                //         labelColor: CustomColor.black,
+                                //         backgroundColor: CustomColor.red),
+                                //   ),
+                                // ),
                               ],
                             ),
                             Padding(

@@ -77,7 +77,7 @@ class AddVehicleState extends State<AddVehicle> {
               ),
               child: GestureDetector(
                 onTap: () {
-                  pickImageFromGallery;
+                  pickImageFromGallery();
                 },
                 child: Container(
                   height: 180,
@@ -127,10 +127,11 @@ class AddVehicleState extends State<AddVehicle> {
                   CustomTextField(
                     controller: vehiclenameController,
                     labelText: "Car Name",
-                    hintText: "Car Name",
+                    fieldName: "Car Name",
                     prefixIcon: Icons.directions_car_filled,
                     keyboardType: TextInputType.name,
                     textCapitalization: TextCapitalization.characters,
+                    
                   ),
 
                   const Gap(10),
@@ -138,7 +139,7 @@ class AddVehicleState extends State<AddVehicle> {
                   CustomTextField(
                     controller: vehicleRegController,
                     labelText: "Registeration Number",
-                    hintText: "Registeration Number",
+                    fieldName: "Registeration Number",
                     prefixIcon: Icons.pin,
                     keyboardType: TextInputType.streetAddress,
                   ),
@@ -188,7 +189,7 @@ class AddVehicleState extends State<AddVehicle> {
                   CustomTextField(
                     controller: vehicleRentController,
                     labelText: " Rent/Day",
-                    hintText: "Rent/Day",
+                    fieldName: "Rent/Day",
                     prefixIcon: Icons.currency_rupee,
                     keyboardType: TextInputType.number,
                   ),
@@ -238,7 +239,8 @@ class AddVehicleState extends State<AddVehicle> {
     final DailyRent = vehicleRentController.text.trim();
 
     // Validation
-    if (imagepath == null ||
+    if (
+      //imagepath == null ||
         vehicleName.isEmpty ||
         vehicleReg.isEmpty ||
         selectedFuel == null ||

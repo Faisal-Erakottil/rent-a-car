@@ -9,7 +9,7 @@ class CustomTextField extends StatelessWidget {
   final TextEditingController? controller;
   final String labelText;
   final String? hintText;
-  final IconData prefixIcon;
+  final IconData? prefixIcon;
   final bool obscureText;
   final String? Function(String?)? validator;
   final TextInputType? keyboardType;
@@ -18,11 +18,12 @@ class CustomTextField extends StatelessWidget {
     required this.controller,
     required this.labelText,
     this.hintText,
-    required this.prefixIcon,
     this.obscureText = false,
     this.validator,
     this.keyboardType,
     textCapitalization = TextCapitalization.characters,
+    required String fieldName,
+    this.prefixIcon,
   });
 
   @override
@@ -55,26 +56,29 @@ class CustomTextField extends StatelessWidget {
 
 //==================================== text function
 Widget textforms({
-  required dynamic fieldname,
+  dynamic fieldname,
   dynamic controler,
-  dynamic validater,
-  required dynamic message,
+  //dynamic validator,
+  dynamic message,
   TextInputType keyboardType = TextInputType.text,
   Icon? prefixIcon,
+  required TextEditingController controller,
+  String? Function(String?)? validator,
 }) {
   return TextFormField(
     controller: controler,
     style: const TextStyle(color: Colors.white),
     keyboardType: keyboardType,
     decoration: InputDecoration(
-      prefixIcon:prefixIcon,iconColor: CustomColor.white,
+      prefixIcon: prefixIcon, iconColor: CustomColor.white,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
       ),
       filled: true,
       fillColor: const Color.fromARGB(255, 38, 38, 42),
       labelText: fieldname,
-      errorText: validater ? message : null,
+      //errorText: validator ? message : null,
     ),
+    validator: validator,
   );
 }
