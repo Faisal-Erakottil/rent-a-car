@@ -1,14 +1,12 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, file_names
 
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:main_project/data_model/box.dart';
 import 'package:main_project/data_model/data_model.dart';
-//import 'package:main_project/db_functions/db_functions.dart';
 import 'package:main_project/screens/customer_details.dart';
 import 'package:main_project/widgets/custom_button.dart';
 import 'package:main_project/widgets/custom_text.dart';
@@ -147,7 +145,7 @@ class CustomerList extends StatelessWidget {
                                         context: context,
                                         builder: (BuildContext context) {
                                           return AlertDialog(
-                                            backgroundColor: CustomColor.most,
+                                            backgroundColor: CustomColor.primary,
                                             title: const CustomText(
                                               textContent: "Confirm",
                                               fontWeight: FontWeight.bold,

@@ -1,4 +1,4 @@
-// ignore_for_file: non_constant_identifier_names, unused_field
+// ignore_for_file: non_constant_identifier_names, unused_field, prefer_const_constructors
 
 import 'package:flutter/material.dart';
 import 'package:main_project/data_model/box.dart';
@@ -7,6 +7,7 @@ import 'package:main_project/db_functions/db_functions.dart';
 import 'package:main_project/screens/add_vehicle.dart';
 import 'package:main_project/screens/car_list.dart';
 import 'package:main_project/screens/drawer_widget.dart';
+import 'package:main_project/screens/search_screen.dart';
 import 'package:main_project/widgets/custom_button.dart';
 import 'package:main_project/widgets/custom_text.dart';
 import 'package:main_project/widgets/customcolors.dart';
@@ -59,6 +60,18 @@ class _HomeScreenState extends State<HomeScreen> {
               textContent: "Home", textColor: CustomColor.white, fontSize: 20),
         ),
         iconTheme: const IconThemeData(color: Colors.white),
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SearchScreen(),
+                  ),
+                );
+              },
+              icon: Icon(Icons.search))
+        ],
       ),
       drawer: CustomDrawer(userDetails: _userDetails),
       body: const VehicleList(),

@@ -7,5 +7,4 @@ class CustomColor {
   static const Color blue = Colors.blue;
   static const Color green = Color.fromARGB(255, 70, 250, 76);
   static const Color red =  Color(0xFFFF0000);
-  static const Color most =Color.fromARGB(255, 35, 35, 35);
 }

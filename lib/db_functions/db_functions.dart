@@ -1,4 +1,4 @@
-// ignore_for_file: non_constant_identifier_names, no_leading_underscores_for_local_identifiers
+// ignore_for_file: non_constant_identifier_names, no_leading_underscores_for_local_identifiers, avoid_types_as_parameter_names, unused_local_variable
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:main_project/data_model/data_model.dart';
@@ -80,6 +80,7 @@ Future<void> deleteCustomer(int id) async {
   await customerDB.delete(id);
   getCustomerDetails();
 }
+
 //=========================================update customer
 Future<void> UpdateCustomer(CustomerDetailsModel updatedCustomer) async {
   final CustomerDB = await Hive.openBox<CustomerDetailsModel>("customer_db");
@@ -87,4 +88,34 @@ Future<void> UpdateCustomer(CustomerDetailsModel updatedCustomer) async {
     await CustomerDB.put(updatedCustomer.key, updatedCustomer);
     getCustomerDetails();
   }
+}
+
+//==================================search vehicle
+List<vehicleDetailsModel> searchCars(String query) {
+  final vehicleDB = Hive.box<vehicleDetailsModel>("vehicle_db");
+  final List<vehicleDetailsModel> allvehicles = vehicleDB.values.toList();
+
+  if (query.isEmpty) {
+    return allvehicles;
+  }
+
+  final lowerCaseQuery = query.toLowerCase();
+  return allvehicles
+      .where((vehicle) =>
+          vehicle.vehiclename.toLowerCase().contains(lowerCaseQuery))
+      .toList();
+}
+
+//====================================search Customer
+List<CustomerDetailsModel> searchCustomers(String query) {
+  final CustomerDB = Hive.box<CustomerDetailsModel>("customer_db");
+  final List<CustomerDetailsModel> allCustomers = CustomerDB.values.toList();
+  if (query.isEmpty) {
+    return allCustomers;
+  }
+  final lowerCaseQuery = query.toLowerCase();
+  return allCustomers.where((Customer) =>
+          Customer.customerName.toLowerCase().contains(query.toLowerCase()) ||
+          Customer.mobilNumber.toLowerCase().contains(query.toLowerCase()))
+          .toList();
 }

@@ -57,7 +57,7 @@ class VehicleList extends StatelessWidget {
                         height: 250,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          //=================================Reg Number
+                          //========================================Reg Number
                           children: [
                             Padding(
                               padding: const EdgeInsets.all(5.0),
@@ -108,7 +108,7 @@ class VehicleList extends StatelessWidget {
                                           context: context,
                                           builder: (BuildContext context) {
                                             return AlertDialog(
-                                              backgroundColor: CustomColor.most,
+                                              backgroundColor: CustomColor.primary,
                                               title: const CustomText(
                                                 textContent: "Confirm",
                                                 fontWeight: FontWeight.bold,
@@ -158,7 +158,7 @@ class VehicleList extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            //=========================================Car Image
+                            //========================================Car Image
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -177,7 +177,7 @@ class VehicleList extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            //===============================Car name
+                            //=========================================Car name
                             Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
@@ -195,7 +195,7 @@ class VehicleList extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                //===============================Rent now button
+                                //==============================Rent now button
                                 Padding(
                                   padding:
                                       const EdgeInsets.only(left: 45.0, top: 5),

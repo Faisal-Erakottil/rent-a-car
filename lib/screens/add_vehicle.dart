@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names, unused_local_variable
 
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:image_picker/image_picker.dart';
@@ -88,7 +89,7 @@ class AddVehicleState extends State<AddVehicle> {
                   ),
                   child: Stack(
                     children: [
-                      if (imagepath != null)
+                      if (imagepath != null && !kIsWeb)
                         ClipRRect(
                           borderRadius: BorderRadius.circular(10),
                           child: Image.file(
@@ -98,6 +99,14 @@ class AddVehicleState extends State<AddVehicle> {
                             fit: BoxFit.cover,
                           ),
                         ),
+                      if(imagepath != null && kIsWeb)
+                      Image.network(
+                        imagepath!.path,
+                        width: double.infinity,
+                        height: double.infinity,
+                        fit: BoxFit.cover,
+                      ),
+
                       if (imagepath == null)
                         const Center(
                           child: CustomText(
@@ -240,7 +249,7 @@ class AddVehicleState extends State<AddVehicle> {
 
     // Validation
     if (
-      //imagepath == null ||
+      imagepath == null ||
         vehicleName.isEmpty ||
         vehicleReg.isEmpty ||
         selectedFuel == null ||

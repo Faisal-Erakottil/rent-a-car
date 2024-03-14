@@ -63,123 +63,120 @@ class _CustomerDetailsState extends State<CustomerDetails> {
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                ImageSelectionWidget(
-                  onImageSelected: (File? pickedImage, String? pickedImagePath) {
-                    setState(() {
-                      _imgPath = pickedImagePath ?? "";
-                    });
-                  },
-                  initialImagePath: _imgPath.isNotEmpty ? _imgPath : null,
-                ),
-                //========================================================Name
-                CustomTextField(
-                  controller: _nameController,
-                  fieldName: "Name",
-                  labelText: "Name",
-                  keyboardType: TextInputType.name,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Name is required";
-                    }
-                    return null;
-                  }, prefixIcon: Icons.abc,
-                ),
-                const SizedBox(height: 10),
-                //===============================================Mobile Number
-                CustomTextField(
-                  labelText: "Mobile Number",
-                  fieldName: 'Mobile Number',
-                  controller: _mobController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Mobile Number is required";
-                    }
-                    return null;
-                  },
-                  prefixIcon: Icons.phone_iphone,
-                ),
-                const SizedBox(height: 10),
-                //================================================License Number
-                CustomTextField(
-                  labelText: "License Number",
-                  fieldName: "License Number",
-                  controller: _licenseNumberController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "License Number is required";
-                    }
-                    return null;
-                  },
-                  prefixIcon: Icons.badge,
-                ),
-                const SizedBox(height: 10),
-                //======================================================Email ID
-                CustomTextField(
-                  labelText: "Email ID",
-                  fieldName: "Email ID",
-                  controller: _emailController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Email ID is required";
-                    }
-                    return null;
-                  }, prefixIcon: Icons.email,
-                ),
-                const SizedBox(height: 10),
-                //================================================Number of Days
-                CustomTextField(
-                  labelText: "Number of Days",
-                  fieldName: "Number of Days",
-                  controller: _dayCountController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Number of days is required";
-                    }
-                    return null;
-                  }, prefixIcon: Icons.today,
-                ),
-                const SizedBox(height: 10),
-                //================================================Meater Reading
-                CustomTextField(
-                  labelText: "Meater Reading",
-                  fieldName: "Meater Reading",
-                  controller: _meaterReadingController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Meater reading is required";
-                    }
-                    return null;
-                  },prefixIcon: Icons.track_changes,
-                ),
-                const SizedBox(height: 10),
-                //===============================================Advance amount
-                CustomTextField(
-                  labelText: "Advance",
-                  fieldName: "Advance",
-                  controller: _advanceController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Advance is required";
-                    }
-                    return null;
-                  }, prefixIcon: Icons.currency_rupee,
-                ),
-                const SizedBox(height: 10),
-                //==========================================Save Details Button
-                customElevatedButton(
-                  label: "Save Detail",
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      _saveCustomerDetail();
-                    }
-                  },
-                ),
-              ],
-            ),
+          child: Column(
+            children: [
+              ImageSelectionWidget(
+                onImageSelected: (File? pickedImage, String? pickedImagePath) {
+                  setState(() {
+                    _imgPath = pickedImagePath ?? "";
+                  });
+                },
+                initialImagePath: _imgPath.isNotEmpty ? _imgPath : null,
+              ),
+              //========================================================Name
+              CustomTextField(
+                controller: _nameController,
+                fieldName: "Name",
+                labelText: "Name",
+                keyboardType: TextInputType.name,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Name is required";
+                  }
+                  return null;
+                }, prefixIcon: Icons.abc,
+              ),
+              const SizedBox(height: 10),
+              //===============================================Mobile Number
+              CustomTextField(
+                labelText: "Mobile Number",
+                fieldName: 'Mobile Number',
+                controller: _mobController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Mobile Number is required";
+                  }
+                  return null;
+                },
+                prefixIcon: Icons.phone_iphone,
+              ),
+              const SizedBox(height: 10),
+              //================================================License Number
+              CustomTextField(
+                labelText: "License Number",
+                fieldName: "License Number",
+                controller: _licenseNumberController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "License Number is required";
+                  }
+                  return null;
+                },
+                prefixIcon: Icons.badge,
+              ),
+              const SizedBox(height: 10),
+              //======================================================Email ID
+              CustomTextField(
+                labelText: "Email ID",
+                fieldName: "Email ID",
+                controller: _emailController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Email ID is required";
+                  }
+                  return null;
+                }, prefixIcon: Icons.email,
+              ),
+              const SizedBox(height: 10),
+              //================================================Number of Days
+              CustomTextField(
+                labelText: "Number of Days",
+                fieldName: "Number of Days",
+                controller: _dayCountController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Number of days is required";
+                  }
+                  return null;
+                }, prefixIcon: Icons.today,
+              ),
+              const SizedBox(height: 10),
+              //================================================Meater Reading
+              CustomTextField(
+                labelText: "Meater Reading",
+                fieldName: "Meater Reading",
+                controller: _meaterReadingController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Meater reading is required";
+                  }
+                  return null;
+                },prefixIcon: Icons.track_changes,
+              ),
+              const SizedBox(height: 10),
+              //===============================================Advance amount
+              CustomTextField(
+                labelText: "Advance",
+                fieldName: "Advance",
+                controller: _advanceController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Advance is required";
+                  }
+                  return null;
+                }, prefixIcon: Icons.currency_rupee,
+              ),
+              const SizedBox(height: 10),
+              //==========================================Save Details Button
+              customElevatedButton(
+                label: "Save Detail",
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    _saveCustomerDetail();
+                  }
+                },
+              ),
+            ],
           ),
         ),
       ),
@@ -201,8 +198,10 @@ class _CustomerDetailsState extends State<CustomerDetails> {
         email.isEmpty ||
         days.isEmpty ||
         meaterReading.isEmpty ||
-        advance.isEmpty ||
-        _imgPath.isEmpty) {
+        advance.isEmpty 
+        // || _imgPath.isEmpty,
+        )
+        {
       return;
     }
 
