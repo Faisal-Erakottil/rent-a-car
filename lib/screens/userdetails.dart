@@ -94,41 +94,26 @@ class _UserdetailsState extends State<Userdetails> {
                 //================= Name field
                 textforms(
                     fieldname: "Name",
+                    message: "Name is Empty",
                     controller: nameController,
-                    keyboardType: TextInputType.name,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Name is Empty";
-                      } else {
-                        return null;
-                      }
-                    }),
+                    validater: validateName,
+                    keyboardType: TextInputType.name,),
                 const Gap(20),
                 //================== Mobils Number
                 textforms(
                     fieldname: "Mobile Number",
+                    message: "Mobile Number is Empty",
                     controller: mobController,
-                    keyboardType: TextInputType.phone,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Mobile number is Empty";
-                      } else {
-                        return null;
-                      }
-                    }),
+                    validater: validateMobileNumber,
+                    keyboardType: TextInputType.phone),
                 const Gap(20),
                 //================== Email ID
                 textforms(
                     fieldname: "Email ID",
+                    message: "Email ID is Empty",
                     controller: emailController,
-                    keyboardType: TextInputType.emailAddress,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Email ID is Empty";
-                      } else {
-                        return null;
-                      }
-                    }),
+                    validater: validateEmail,
+                    keyboardType: TextInputType.emailAddress),
                 const Gap(20),
                 //================== save Button
                 ElevatedButton.icon(
@@ -163,7 +148,7 @@ class _UserdetailsState extends State<Userdetails> {
                         image: imagepath?.path ?? "",
                       );
                     }
-
+                  
                     onAddSaveButtonClicked();
                     Navigator.pushReplacement(
                       context,
@@ -192,7 +177,7 @@ class _UserdetailsState extends State<Userdetails> {
       ),
     );
   }
-
+  
   Future<void> onAddSaveButtonClicked() async {
     final _name = nameController.text.trim();
     final _mobile = mobController.text.trim();

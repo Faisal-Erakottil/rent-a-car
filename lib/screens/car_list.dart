@@ -52,7 +52,7 @@ class VehicleList extends StatelessWidget {
                     padding: const EdgeInsets.all(2),
                     child: Card(
                       color: Colors.white,
-                      elevation: 2,
+                      elevation: 100,
                       child: SizedBox(
                         height: 250,
                         child: Column(

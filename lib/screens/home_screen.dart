@@ -57,7 +57,10 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Padding(
           padding: EdgeInsets.only(left: 106),
           child: CustomText(
-              textContent: "Home", textColor: CustomColor.white, fontSize: 20),
+            textContent: "Home",
+            textColor: CustomColor.white,
+            fontSize: 20,
+          ),
         ),
         iconTheme: const IconThemeData(color: Colors.white),
         actions: [
@@ -74,27 +77,23 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       drawer: CustomDrawer(userDetails: _userDetails),
-      body: const VehicleList(),
-      //=====================================Add Car button
-      floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 30.0),
-            child: customElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const AddVehicle(),
-                      ));
-                },
-                label: "ADD CAR",
-                labelColor: CustomColor.white,
-                backgroundColor: CustomColor.blue),
-          ),
-        ],
-      ),
+      body: Column(children: [
+        Expanded(
+          child: VehicleList(),
+        ),
+        //=====================================Add Car button
+        customElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const AddVehicle(),
+                  ));
+            },
+            label: "ADD CAR",
+            labelColor: CustomColor.white,
+            backgroundColor: CustomColor.blue),
+      ]),
     );
   }
 }

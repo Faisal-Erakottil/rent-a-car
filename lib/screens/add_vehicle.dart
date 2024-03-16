@@ -51,9 +51,9 @@ class AddVehicleState extends State<AddVehicle> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 29, 29, 31),
+      backgroundColor:  CustomColor.primary,
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: CustomColor.black,
         title: const Padding(
           padding: EdgeInsets.all(70),
           child: CustomText(
@@ -140,9 +140,7 @@ class AddVehicleState extends State<AddVehicle> {
                     prefixIcon: Icons.directions_car_filled,
                     keyboardType: TextInputType.name,
                     textCapitalization: TextCapitalization.characters,
-                    
                   ),
-
                   const Gap(10),
                   //=====================================Vehicle number
                   CustomTextField(
@@ -159,7 +157,13 @@ class AddVehicleState extends State<AddVehicle> {
                     labelText: "Fuel Type",
                     hintText: "Fuel Type",
                     value: selectedFuel,
-                    items: ['Petrol', 'Diesel', 'EV', 'CNG', 'Hybrid'],
+                    items: [
+                      'Petrol', 
+                      'Diesel', 
+                      'EV', 
+                      'CNG', 
+                      'Hybrid',
+                    ],
                     onChanged: (String? value) {
                       setState(() {
                         selectedFuel = value;

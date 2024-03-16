@@ -7,12 +7,14 @@ class CustomText extends StatelessWidget {
   final Color textColor;
   final FontWeight fontWeight;
   final double fontSize;
+  final TextOverflow? overflow;
 
   const CustomText({
     required this.textContent,
     this.textColor = Colors.white,
     this.fontWeight = FontWeight.bold,
     this.fontSize = 16,
+    this.overflow,
   });
 
   @override
@@ -24,6 +26,7 @@ class CustomText extends StatelessWidget {
         fontFamily: 'Ubuntu',
         fontWeight: fontWeight,
         fontSize: fontSize,
+        overflow: overflow,
       ),
     );
   }

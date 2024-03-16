@@ -63,7 +63,7 @@ Widget textforms({
   TextInputType keyboardType = TextInputType.text,
   Icon? prefixIcon,
   required TextEditingController controller,
-  String? Function(String?)? validator,
+  String? Function(String?)? validator, required bool validater,
 }) {
   return TextFormField(
     controller: controler,
