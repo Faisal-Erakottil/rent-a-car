@@ -19,9 +19,8 @@ class _RevenueState extends State<Revenue> {
         title: const Padding(
           padding: EdgeInsets.only(left: 100),
           child: CustomText(
-            textContent: "Revenue",
-            textColor: Colors.white,
-            fontSize: 18,
+            text: "Revenue",
+            size: 18,
             fontWeight: FontWeight.bold,
           ),
         ),

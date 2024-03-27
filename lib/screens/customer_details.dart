@@ -3,32 +3,37 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:main_project/data_model/data_model.dart';
+import 'package:intl/intl.dart';
+import 'package:main_project/data_model/customer_db.dart';
 import 'package:main_project/db_functions/db_functions.dart';
 import 'package:main_project/screens/customer.dart';
-import 'package:main_project/screens/search_screen.dart';
 import 'package:main_project/widgets/custom_button.dart';
 import 'package:main_project/widgets/custom_text.dart';
 import 'package:main_project/widgets/custom_text_field.dart';
 import 'package:main_project/widgets/customcolors.dart';
 import 'package:main_project/widgets/image_selection.dart';
 
-class CustomerDetails extends StatefulWidget {
-  const CustomerDetails({super.key});
+class CustomerData extends StatefulWidget {
+  // final CustomerDetailsModel customer;
+  const CustomerData({
+    super.key,
+  });
 
   @override
-  State<CustomerDetails> createState() => _CustomerDetailsState();
+  State<CustomerData> createState() => _CustomerDataState();
 }
 
-class _CustomerDetailsState extends State<CustomerDetails> {
+class _CustomerDataState extends State<CustomerData> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _mobController = TextEditingController();
   final _licenseNumberController = TextEditingController();
   final _emailController = TextEditingController();
-  final _dayCountController = TextEditingController();
+  final _pickupController = TextEditingController();
+  final _dropOffController = TextEditingController();
   final _meaterReadingController = TextEditingController();
   final _advanceController = TextEditingController();
+  String? selectedImage;
   String imgPath = "";
   Widget space = const SizedBox(height: 10);
 
@@ -41,9 +46,8 @@ class _CustomerDetailsState extends State<CustomerDetails> {
         title: const Padding(
           padding: EdgeInsets.only(left: 60.0),
           child: CustomText(
-            textContent: "Customer Details",
-            textColor: CustomColor.white,
-            fontSize: 20,
+            text: "Customer Details",
+            size: 20,
           ),
         ),
         iconTheme: const IconThemeData(color: Colors.white),
@@ -61,7 +65,7 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                     //print('Image selected: $pickedImage, Image path: $pickedImagePath');
                   },
                 ),
-                //========================================================Name
+                //==========================================================Name
                 CustomTextField(
                   controller: _nameController,
                   fieldName: "Name",
@@ -76,7 +80,7 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                   prefixIcon: Icons.abc,
                 ),
                 space,
-                //===============================================Mobile Number
+                //=================================================Mobile Number
                 CustomTextField(
                   labelText: "Mobile Number",
                   fieldName: 'Mobile Number',
@@ -118,18 +122,60 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                   prefixIcon: Icons.email,
                 ),
                 space,
-                //================================================Number of Days
+                //================================================ pick Up Date
                 CustomTextField(
-                  labelText: "Number of Days",
-                  fieldName: "Number of Days",
-                  controller: _dayCountController,
+                    labelText: "Pick Up Date",
+                    fieldName: "Pick Up Date",
+                    controller: _pickupController,
+                    onTap: () async {
+                      DateTime currentDate = DateTime.now();
+                      DateTime? pickedDate = await showDatePicker(
+                        context: context,
+                        initialDate: currentDate,
+                        firstDate: currentDate,
+                        lastDate: DateTime(2050),
+                      );
+                      if (pickedDate != null) {
+                        String formattedDate =
+                            DateFormat('dd-MM-yyy').format(pickedDate);
+                        _pickupController.text = formattedDate;
+                      }
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Pick Up a Date";
+                      }
+                      return null;
+                    },
+                    prefixIcon: Icons.calendar_today_rounded),
+                space,
+                //=================================================Drop Off Date
+                CustomTextField(
+                  labelText: "Drop off Date",
+                  fieldName: "Drop off Date",
+                  controller: _dropOffController,
+                  onTap: () async {
+                    DateTime currentDate = DateTime.now();
+                    DateTime? pickedDate = await showDatePicker(
+                      context: context,
+                      initialDate: currentDate,
+                      firstDate: currentDate,
+                      lastDate: DateTime(2050),
+                      
+                    );
+                    if (pickedDate != null) {
+                      _dropOffController.text =
+                          DateFormat('dd-MM-yyy').format(pickedDate);
+                      _formKey.currentState?.validate();
+                    }
+                  },
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return "Number of days is required";
+                      return "Pick a drop off Date";
                     }
                     return null;
                   },
-                  prefixIcon: Icons.today,
+                  prefixIcon: Icons.calendar_today_rounded,
                 ),
                 space,
                 //================================================Meater Reading
@@ -161,7 +207,7 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                 ),
                 space,
                 //==========================================Save Details Button
-                customElevatedButton(
+                customButton(
                   label: "Save Detail",
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
@@ -182,7 +228,8 @@ class _CustomerDetailsState extends State<CustomerDetails> {
     final mobNumber = _mobController.text.trim();
     final licenseNumber = _licenseNumberController.text.trim();
     final email = _emailController.text.trim();
-    final days = _dayCountController.text.trim();
+    final pickUpDate = _pickupController.text.trim();
+    final dropOffDate = _dropOffController.text.trim();
     final meaterReading = _meaterReadingController.text.trim();
     final advance = _advanceController.text.trim();
     //final imagePath = imgPath;
@@ -191,7 +238,8 @@ class _CustomerDetailsState extends State<CustomerDetails> {
         mobNumber.isEmpty ||
         licenseNumber.isEmpty ||
         email.isEmpty ||
-        days.isEmpty ||
+        pickUpDate.isEmpty ||
+        dropOffDate.isEmpty ||
         meaterReading.isEmpty ||
         advance.isEmpty ||
         imgPath.isEmpty) {
@@ -201,9 +249,10 @@ class _CustomerDetailsState extends State<CustomerDetails> {
     final customer = CustomerDetailsModel(
       customerName: name,
       mobilNumber: mobNumber,
-      LicenceNumber: licenseNumber,
-      Email: email,
-      days: days,
+      licenceNumber: licenseNumber,
+      email: email,
+      pickUpDate: pickUpDate,
+      dropOffDate: dropOffDate,
       reading: meaterReading,
       advance: advance,
       CustomerImage: imgPath,

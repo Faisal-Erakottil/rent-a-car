@@ -5,32 +5,32 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:main_project/data_model/data_model.dart';
+import 'package:main_project/data_model/vehicle_db.dart';
 import 'package:main_project/db_functions/db_functions.dart';
-import 'package:main_project/screens/home_screen.dart';
+import 'package:main_project/screens/pages/home_screen.dart';
 import 'package:main_project/widgets/custom_button.dart';
 import 'package:main_project/widgets/custom_text.dart';
 import 'package:main_project/widgets/custom_text_field.dart';
 import 'package:main_project/widgets/customcolors.dart';
 
 class AddVehicle extends StatefulWidget {
-  final vehicleDetailsModel? vehicle;
+  final VehicleDetailsModel? vehicle;
   const AddVehicle({Key? key, this.vehicle}) : super(key: key);
   @override
   State<AddVehicle> createState() => AddVehicleState();
 }
-
-class AddVehicleState extends State<AddVehicle> {
   final vehiclenameController = TextEditingController();
   final vehicleRegController = TextEditingController();
   final vehicleRentController = TextEditingController();
-
   File? imagepath;
   String? selectedImage;
   String? selectedFuel;
   String? selectedSeat;
   final formKey = GlobalKey<FormState>();
-  
+
+class AddVehicleState extends State<AddVehicle> {
+
+
   @override
   void initState() {
     super.initState();
@@ -40,6 +40,7 @@ class AddVehicleState extends State<AddVehicle> {
       vehicleRentController.text = widget.vehicle!.rent;
       selectedFuel = widget.vehicle!.fueltype;
       selectedSeat = widget.vehicle!.seates;
+      
       if (widget.vehicle!.carimage.isNotEmpty) {
         setState(() {
           imagepath = File(widget.vehicle!.carimage);
@@ -55,11 +56,10 @@ class AddVehicleState extends State<AddVehicle> {
       appBar: AppBar(
         backgroundColor: CustomColor.black,
         title: const Padding(
-          padding: EdgeInsets.all(70),
+          padding: EdgeInsets.all(85),
           child: CustomText(
-            textContent: "Add Vehicle",
-            fontSize: 18,
-            textColor: Colors.white,
+            text: "Add Vehicle",
+            size: 18,
           ),
         ),
         iconTheme: const IconThemeData(
@@ -110,10 +110,10 @@ class AddVehicleState extends State<AddVehicle> {
                       if (imagepath == null)
                         const Center(
                           child: CustomText(
-                            textContent: " Add Image+",
-                            fontSize: 16,
+                            text: " Add Image+",
+                            size: 16,
                             fontWeight: FontWeight.bold,
-                            textColor: Colors.black,
+                            color: Colors.black,
                           ),
                         ),
                       const Positioned(
@@ -158,10 +158,10 @@ class AddVehicleState extends State<AddVehicle> {
                     hintText: "Fuel Type",
                     value: selectedFuel,
                     items: [
-                      'Petrol', 
-                      'Diesel', 
-                      'EV', 
-                      'CNG', 
+                      'Petrol',
+                      'Diesel',
+                      'EV',
+                      'CNG',
                       'Hybrid',
                     ],
                     onChanged: (String? value) {
@@ -209,7 +209,7 @@ class AddVehicleState extends State<AddVehicle> {
 
                   const Gap(10),
                   //=======================================Save Details
-                  customElevatedButton(
+                  customButton(
                     onPressed: () {
                       saveDetails();
                       Navigator.push(
@@ -252,8 +252,7 @@ class AddVehicleState extends State<AddVehicle> {
     final DailyRent = vehicleRentController.text.trim();
 
     // Validation
-    if (
-      imagepath == null ||
+    if (imagepath == null ||
         vehicleName.isEmpty ||
         vehicleReg.isEmpty ||
         selectedFuel == null ||
@@ -262,8 +261,8 @@ class AddVehicleState extends State<AddVehicle> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: CustomText(
-            textContent: "Please select an image and fill out all fields",
-            textColor: Colors.black,
+            text: "Please fill out all fields",
+            color: Colors.black,
           ),
           backgroundColor: Colors.white,
         ),
@@ -271,7 +270,7 @@ class AddVehicleState extends State<AddVehicle> {
       return;
     }
 
-    final cars = vehicleDetailsModel(
+    final cars = VehicleDetailsModel(
       vehiclename: vehicleName,
       vehiclereg: vehicleReg,
       fueltype: selectedFuel!,
@@ -284,7 +283,7 @@ class AddVehicleState extends State<AddVehicle> {
     if (widget.vehicle == null) {
       addCar(cars);
     } else {
-      int id = widget.vehicle?.id??-1;
+      int id = widget.vehicle?.id ?? -1;
     }
     // Clear text fields and reset state
     vehiclenameController.clear();
@@ -304,4 +303,26 @@ class AddVehicleState extends State<AddVehicle> {
           ),
         ));
   }
+
+  // Future<void> editvehicle(
+  //   VehicleDetailsModel vehicleModel,
+  //   String vehicleName,
+  //   String regNumber,
+  //   String rent,
+  //   String fuel,
+  //   String seater,
+  //   String days,
+  //   String vehicleimg,
+  // ) async {
+  //   vehiclenameController.text = vehicleName;
+  //   vehicleRegController.text = regNumber;
+  //   vehicleRentController.text = rent;
+  //   selectedFuel = fuel;
+  //   selectedSeat = seater;
+  //   selectedImage = vehicleimg;
+  //   // Navigator.of(context).push(MaterialPageRoute(
+  //   //   builder: (context) =>
+  //   //       UpdateVehicle(vehicleDetailsModel: vehicleDetailsModel),
+  //   // ));
+  // }
 }

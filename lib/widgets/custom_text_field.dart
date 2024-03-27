@@ -11,6 +11,7 @@ class CustomTextField extends StatelessWidget {
   final String? hintText;
   final IconData? prefixIcon;
   final bool obscureText;
+  final VoidCallback? onTap;
   final String? Function(String?)? validator;
   final TextInputType? keyboardType;
 
@@ -21,6 +22,7 @@ class CustomTextField extends StatelessWidget {
     this.obscureText = false,
     this.validator,
     this.keyboardType,
+    this.onTap,
     textCapitalization = TextCapitalization.characters,
     required String fieldName,
     this.prefixIcon,
@@ -40,6 +42,7 @@ class CustomTextField extends StatelessWidget {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15),
         ),
+        
         filled: true,
         fillColor: const Color.fromARGB(255, 29, 29, 31),
         labelText: labelText,
@@ -48,12 +51,12 @@ class CustomTextField extends StatelessWidget {
         hintStyle: const TextStyle(color: Colors.white),
         // Set keyboardType
       ),
+      onTap:onTap,
       validator: validator,
       keyboardType: keyboardType,
     );
   }
 }
-
 //==================================== text function
 Widget textforms({
   dynamic fieldname,
@@ -63,7 +66,8 @@ Widget textforms({
   TextInputType keyboardType = TextInputType.text,
   Icon? prefixIcon,
   required TextEditingController controller,
-  String? Function(String?)? validator, required bool validater,
+  String? Function(String?)? validator,
+  required bool validater,
 }) {
   return TextFormField(
     controller: controler,

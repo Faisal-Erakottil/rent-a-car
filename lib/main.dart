@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:main_project/data_model/data_model.dart';
-import 'package:main_project/screens/spalsh_screen.dart';
+import 'package:main_project/data_model/customer_db.dart';
+import 'package:main_project/data_model/user_model.dart';
+import 'package:main_project/data_model/vehicle_db.dart';
+import 'package:main_project/screens/pages/spalsh_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -12,10 +14,10 @@ void main() async {
   }
   await Hive.openBox<UserDetailsModel>('details_db');
   //========================================Hive Adapter two
-  if (!Hive.isAdapterRegistered(vehicleDetailsModelAdapter().typeId)) {
-    Hive.registerAdapter(vehicleDetailsModelAdapter());
+  if (!Hive.isAdapterRegistered(VehicleDetailsModelAdapter().typeId)) {
+    Hive.registerAdapter(VehicleDetailsModelAdapter());
   }
-  await Hive.openBox<vehicleDetailsModel>("vehicle_db");
+  await Hive.openBox<VehicleDetailsModel>("vehicle_db");
   //========================================
   if (!Hive.isAdapterRegistered(CustomerDetailsModelAdapter().typeId)) {
     Hive.registerAdapter(CustomerDetailsModelAdapter());

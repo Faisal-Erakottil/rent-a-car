@@ -15,8 +15,8 @@ class HelpAndInfo extends StatelessWidget {
         title: const Padding(
           padding: EdgeInsets.all(88.0),
           child: CustomText(
-            textContent: "Help & info",
-            fontSize: 18,
+            text: "Help & info",
+            size: 18,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -27,7 +27,7 @@ class HelpAndInfo extends StatelessWidget {
       body: const Padding(
         padding: EdgeInsets.all(20),
         child: CustomText(
-            textContent: "Welcome to the Help Center! We're here "
+            text: "Welcome to the Help Center! We're here "
                 "\nto guide you through the features and "
                 "functionalities of our application. Whether "
                 "you're a new user or an experienced pro, we "
@@ -44,8 +44,8 @@ class HelpAndInfo extends StatelessWidget {
                 "Remember, we're always happy to help! So don't \n"
                 "hesitate to reach out if you have any questions or\n"
                 "need a helping hand.\n",
-            textColor: Colors.blue,
-            fontSize: 16),
+            color: Colors.blue,
+            ),
       ),
     );
   }

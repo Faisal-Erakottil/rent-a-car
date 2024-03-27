@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 //========================================
-Widget customElevatedButton({
+Widget customButton({
   required VoidCallback onPressed,
   required String label,
   void Function() ?buttonPressed,

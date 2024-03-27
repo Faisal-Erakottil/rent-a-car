@@ -3,29 +3,30 @@
 import 'package:flutter/material.dart';
 
 class CustomText extends StatelessWidget {
-  final String textContent;
-  final Color textColor;
+  final String text;
+  final Color color;
   final FontWeight fontWeight;
-  final double fontSize;
+  final double size;
   final TextOverflow? overflow;
 
+
   const CustomText({
-    required this.textContent,
-    this.textColor = Colors.white,
+    required this.text,
+    this.color = Colors.white,
     this.fontWeight = FontWeight.bold,
-    this.fontSize = 16,
+    this.size = 16,
     this.overflow,
   });
 
   @override
   Widget build(BuildContext context) {
     return Text(
-      textContent,
+      text,
       style: TextStyle(
-        color: textColor,
+        color: color,
         fontFamily: 'Ubuntu',
         fontWeight: fontWeight,
-        fontSize: fontSize,
+        fontSize: size,
         overflow: overflow,
       ),
     );

@@ -12,17 +12,16 @@ class EditAlert extends StatelessWidget {
     return AlertDialog(
       backgroundColor: CustomColor.primary,
       title: const CustomText(
-        textContent: "Confirm",
+        text: "Confirm",
         fontWeight: FontWeight.bold,
-        textColor: CustomColor.white,
-        fontSize: 22,
+        size: 22,
       ),
       content: const CustomText(
-        textContent: "Do you Want to Edit?",
-        fontSize: 18,
+        text: "Do you Want to Edit?",
+        size: 18,
       ),
       actions: <Widget>[
-        customElevatedButton(
+        customButton(
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -30,7 +29,7 @@ class EditAlert extends StatelessWidget {
           labelColor: CustomColor.black,
           backgroundColor: CustomColor.green,
         ),
-        customElevatedButton(
+        customButton(
           onPressed: onEdit,
           backgroundColor: CustomColor.green,
           label: "YES",

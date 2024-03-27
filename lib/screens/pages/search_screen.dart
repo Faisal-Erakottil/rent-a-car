@@ -4,7 +4,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:main_project/data_model/data_model.dart';
+import 'package:main_project/data_model/customer_db.dart';
+import 'package:main_project/data_model/vehicle_db.dart';
 import 'package:main_project/db_functions/db_functions.dart';
 import 'package:main_project/widgets/custom_text.dart';
 import 'package:main_project/widgets/customcolors.dart';
@@ -19,7 +20,7 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   final searchController = TextEditingController();
   int indexNum = 0;
-  List<vehicleDetailsModel> searchCarResults = [];
+  List<VehicleDetailsModel> searchCarResults = [];
   List<CustomerDetailsModel> searchCustomerResults = [];
 
   @override
@@ -44,8 +45,8 @@ class _SearchScreenState extends State<SearchScreen> {
         title: Padding(
           padding: const EdgeInsets.all(105.0),
           child: const CustomText(
-            textContent: "Search",
-            fontSize: 20,
+            text: "Search",
+            size: 20,
           ),
         ),
         iconTheme: IconThemeData(color: CustomColor.white),
@@ -85,12 +86,11 @@ class _SearchScreenState extends State<SearchScreen> {
                         radius: 30,
                       ),
                       title: CustomText(
-                        textContent: vehicle.vehiclename,
-                        textColor: CustomColor.white,
+                        text: vehicle.vehiclename,
                       ),
                       subtitle: CustomText(
-                        textContent: '₹ ${vehicle.rent}/DAY',
-                        textColor: CustomColor.white,
+                        text: '₹ ${vehicle.rent}/DAY',
+                        color: CustomColor.white,
                       ),
                       trailing: SizedBox(
                         width: 28,
@@ -124,12 +124,12 @@ class _SearchScreenState extends State<SearchScreen> {
                       ),
 
                       title: CustomText(
-                        textContent: customer.customerName,
-                        textColor: CustomColor.white,
+                        text: customer.customerName,
+                        color: CustomColor.white,
                       ),
                       subtitle: CustomText(
-                        textContent: customer.mobilNumber,
-                        textColor: CustomColor.white,
+                        text: customer.mobilNumber,
+                        color: CustomColor.white,
                       ),
                       trailing: SizedBox(
                         width: 28,

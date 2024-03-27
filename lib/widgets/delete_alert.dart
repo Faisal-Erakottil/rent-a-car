@@ -12,18 +12,17 @@ class DeleteAlert extends StatelessWidget {
      return AlertDialog(
         backgroundColor:CustomColor.primary,
         title: const CustomText(
-          textContent: "Confirm",
+          text: "Confirm",
           fontWeight: FontWeight.bold,
-          textColor: CustomColor.white,
-          fontSize: 22,
+          size: 22,
         ),
         content: const CustomText(
-          textContent:
+          text:
               "Are you sure you want to delete this customer?",
-          fontSize: 18,
+          size: 18,
         ),
         actions: <Widget>[
-          customElevatedButton(
+          customButton(
             onPressed: () {
               Navigator.of(context).pop();
             },
@@ -31,7 +30,7 @@ class DeleteAlert extends StatelessWidget {
             labelColor: CustomColor.black,
             backgroundColor:CustomColor.green,
           ),
-          customElevatedButton(
+          customButton(
             onPressed:onDelete,
             backgroundColor:
                 CustomColor.red,

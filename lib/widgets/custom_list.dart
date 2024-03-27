@@ -23,8 +23,8 @@ class CustomList extends StatelessWidget {
             )
           : null,
       title: CustomText(
-        textContent: title,
-        textColor: Colors.blue,
+        text: title,
+        color: Colors.blue,
       ),
       onTap: onTap,
     );

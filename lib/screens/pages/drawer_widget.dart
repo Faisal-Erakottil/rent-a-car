@@ -1,12 +1,13 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:main_project/data_model/data_model.dart';
+import 'package:main_project/data_model/user_model.dart';
 import 'package:main_project/screens/customer.dart';
-import 'package:main_project/screens/help&info.dart';
+import 'package:main_project/screens/pages/help&info.dart';
 import 'package:main_project/screens/revenue.dart';
 import 'package:main_project/screens/userdetails.dart';
 import 'package:main_project/widgets/custom_list.dart';
 import 'package:main_project/widgets/custom_text.dart';
+import 'package:main_project/widgets/customcolors.dart';
 
 class CustomDrawer extends StatelessWidget {
   final UserDetailsModel? userDetails;
@@ -17,12 +18,12 @@ class CustomDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       child: Container(
-        color: Colors.white,
+        color: CustomColor.white,
         child: ListView(
           children: <Widget>[
             DrawerHeader(
               decoration: const BoxDecoration(
-                color: Colors.white,
+                color:CustomColor.white,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -43,23 +44,23 @@ class CustomDrawer extends StatelessWidget {
                         children: [
                           const SizedBox(height: 20),
                           CustomText(
-                            textContent: " ${userDetails!.name}",
-                            fontSize: 18,
-                            textColor: Colors.black,
+                            text: "Name: ${userDetails!.name}",
+                            size: 18,
+                            color: CustomColor.blue,
                             fontWeight: FontWeight.bold,
                           ),
                           const SizedBox(height: 5),
                           CustomText(
-                            textContent: " ${userDetails!.mobile}",
-                            fontSize: 18,
-                            textColor: Colors.black,
+                            text: "Mob No: ${userDetails!.mobile}",
+                            size: 18,
+                            color: CustomColor.blue,
                             fontWeight: FontWeight.bold,
                           ),
                           const SizedBox(height: 5),
                           CustomText(
-                            textContent: " ${userDetails!.email}",
-                            fontSize: 18,
-                            textColor: Colors.black,
+                            text: "Email Id: ${userDetails!.email}",
+                            size: 18,
+                            color:CustomColor.blue,
                             fontWeight: FontWeight.bold,
                           ),
                         ],

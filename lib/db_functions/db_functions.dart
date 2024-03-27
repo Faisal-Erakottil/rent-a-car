@@ -1,10 +1,13 @@
 // ignore_for_file: non_constant_identifier_names, no_leading_underscores_for_local_identifiers, avoid_types_as_parameter_names, unused_local_variable
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:main_project/data_model/data_model.dart';
+import 'package:main_project/data_model/box.dart';
+import 'package:main_project/data_model/customer_db.dart';
+import 'package:main_project/data_model/user_model.dart';
+import 'package:main_project/data_model/vehicle_db.dart';
 
 ValueNotifier<List<UserDetailsModel>> usernotifer = ValueNotifier([]);
-ValueNotifier<List<vehicleDetailsModel>> vehiclenotifer = ValueNotifier([]);
+ValueNotifier<List<VehicleDetailsModel>> vehiclenotifer = ValueNotifier([]);
 ValueNotifier<List<CustomerDetailsModel>> customerNotifier = ValueNotifier([]);
 
 //=====================================Adding user details
@@ -25,8 +28,8 @@ Future<void> getDetails() async {
 }
 
 //=====================================Add vehicle Details
-Future<void> addCar(vehicleDetailsModel value) async {
-  final carDB = await Hive.openBox<vehicleDetailsModel>('vehicle_db');
+Future<void> addCar(VehicleDetailsModel value) async {
+  final carDB = await Hive.openBox<VehicleDetailsModel>('vehicle_db');
   final id = await carDB.add(value);
   value.id = id;
   vehiclenotifer.value.add(value);
@@ -35,27 +38,61 @@ Future<void> addCar(vehicleDetailsModel value) async {
 
 //======================================Getting vehicle Details
 Future<void> getVehicleDetails() async {
-  final vehicleDB = await Hive.openBox<vehicleDetailsModel>('vehicle_db');
+  final vehicleDB = await Hive.openBox<VehicleDetailsModel>('vehicle_db');
   vehiclenotifer.value.clear();
   vehiclenotifer.value.addAll(vehicleDB.values);
   vehiclenotifer.notifyListeners();
 }
 
-//=====================================Deleting Data from Box
-Future<void> deletVehicle(int id) async {
-  final carDB = await Hive.openBox<vehicleDetailsModel>('vehicle_db');
-  await carDB.delete(id);
+//===================================== Deleting Data from Box
+Future<void> deletVehicle(VehicleDetailsModel vehicleModel) async {
+  final carDB = await Hive.openBox<VehicleDetailsModel>('vehicle_db');
+  await vehicleModel.delete();
   getVehicleDetails();
 }
 
-//======================================update vehicle
-Future<void> UpdateVehicle(vehicleDetailsModel updatedVehicle) async {
-  final vehicleDB = await Hive.openBox<vehicleDetailsModel>('vehicle_db');
-  if (vehicleDB.containsKey(updatedVehicle.key)) {
-    await vehicleDB.put(updatedVehicle.key, updatedVehicle);
-    getVehicleDetails();
-  }
+
+//=======================================Remove vehicle
+List<VehicleDetailsModel> removedVehicleList = [];
+void removeCarFromScreen(VehicleDetailsModel vehicle) {
+  removedVehicleList.add(vehicle);
+  vehiclenotifer.value.remove(vehicle);
+  Boxes.getvehicleData().delete(vehicle.key);
+  vehiclenotifer.notifyListeners();
 }
+
+List<VehicleDetailsModel> getRemovedVehicle() {
+  return removedVehicleList;
+}
+
+void clearRemovedVehicle() {
+  removedVehicleList.clear();
+}
+
+//=======================================remove customers
+List<CustomerDetailsModel> removedCustomersList = [];
+void removeCustomerFromScreen(CustomerDetailsModel customer) {
+  removedCustomersList.add(customer);
+  customerNotifier.value.remove(customer);
+  Boxes.getcustomerdetail().delete(customer.key);
+}
+
+List<CustomerDetailsModel> getRemovedCustomers() {
+  return removedCustomersList;
+}
+
+void clearRemovedCustomers() {
+  removedCustomersList.clear();
+}
+
+//====================================== update vehicle
+// Future<void> UpdateVehicle(vehicleDetailsModel updatedVehicle, {required Type vehicleDetailsModel}) async {
+//   final vehicleDB = await Hive.openBox<vehicleDetailsModel>('vehicle_db');
+//   if (vehicleDB.containsKey(updatedVehicle.key)) {
+//     await vehicleDB.put(updatedVehicle.key, updatedVehicle);
+//     getVehicleDetails();
+//   }
+// }
 
 //==========================================adding Customer Details
 Future<void> addcustomer(CustomerDetailsModel value) async {
@@ -72,13 +109,16 @@ Future<void> getCustomerDetails() async {
   customerNotifier.value.clear();
   customerNotifier.value.addAll(customerDB.values);
   customerNotifier.notifyListeners();
+  // print('Customer details fetched and notifier updated');
 }
 
 //=======================================Delete customer
 Future<void> deleteCustomer(int id) async {
+  // print('Deleting customer with ID:$id');
   final customerDB = await Hive.openBox<CustomerDetailsModel>('customer_db');
   await customerDB.delete(id);
   getCustomerDetails();
+  // print('Customer deleted successfully');
 }
 
 //=========================================update customer
@@ -91,9 +131,9 @@ Future<void> UpdateCustomer(CustomerDetailsModel updatedCustomer) async {
 }
 
 //==================================search vehicle
-List<vehicleDetailsModel> searchCars(String query) {
-  final vehicleDB = Hive.box<vehicleDetailsModel>("vehicle_db");
-  final List<vehicleDetailsModel> allvehicles = vehicleDB.values.toList();
+List<VehicleDetailsModel> searchCars(String query) {
+  final vehicleDB = Hive.box<VehicleDetailsModel>("vehicle_db");
+  final List<VehicleDetailsModel> allvehicles = vehicleDB.values.toList();
 
   if (query.isEmpty) {
     return allvehicles;
@@ -114,8 +154,9 @@ List<CustomerDetailsModel> searchCustomers(String query) {
     return allCustomers;
   }
   final lowerCaseQuery = query.toLowerCase();
-  return allCustomers.where((Customer) =>
+  return allCustomers
+      .where((Customer) =>
           Customer.customerName.toLowerCase().contains(query.toLowerCase()) ||
           Customer.mobilNumber.toLowerCase().contains(query.toLowerCase()))
-          .toList();
+      .toList();
 }

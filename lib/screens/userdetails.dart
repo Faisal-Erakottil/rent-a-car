@@ -5,14 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:main_project/data_model/box.dart';
-import 'package:main_project/data_model/data_model.dart';
-import 'package:main_project/screens/home_screen.dart';
+import 'package:main_project/data_model/user_model.dart';
+import 'package:main_project/screens/pages/home_screen.dart';
 import 'package:main_project/widgets/custom_text.dart';
 import 'package:main_project/widgets/custom_text_field.dart';
 import 'package:main_project/widgets/customcolors.dart';
 
 class Userdetails extends StatefulWidget {
-  const Userdetails({super.key});
+  //const Userdetails({super.key});
+  const Userdetails({Key?key}): super(key: key);
 
   @override
   State<Userdetails> createState() => _UserdetailsState();
@@ -44,15 +45,14 @@ class _UserdetailsState extends State<Userdetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 29, 29, 31),
+      backgroundColor: CustomColor.primary,
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: CustomColor.black,
         title: const Padding(
           padding: EdgeInsets.all(86.0),
           child: CustomText(
-            textContent: "User Details",
-            textColor: Colors.white,
-            fontSize: 18,
+            text: "User Details",
+            size: 18,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -93,11 +93,12 @@ class _UserdetailsState extends State<Userdetails> {
               children: [
                 //================= Name field
                 textforms(
-                    fieldname: "Name",
-                    message: "Name is Empty",
-                    controller: nameController,
-                    validater: validateName,
-                    keyboardType: TextInputType.name,),
+                  fieldname: "Name",
+                  message: "Name is Empty",
+                  controller: nameController,
+                  validater: validateName,
+                  keyboardType: TextInputType.name,
+                ),
                 const Gap(20),
                 //================== Mobils Number
                 textforms(
@@ -148,7 +149,7 @@ class _UserdetailsState extends State<Userdetails> {
                         image: imagepath?.path ?? "",
                       );
                     }
-                  
+
                     onAddSaveButtonClicked();
                     Navigator.pushReplacement(
                       context,
@@ -159,14 +160,11 @@ class _UserdetailsState extends State<Userdetails> {
                   },
                   icon: const Icon(
                     Icons.save,
-                    color: Colors.white,
+                    color: CustomColor.white,
                   ),
-                  label: const Text(
-                    "Save",
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.white,
-                    ),
+                  label: const CustomText(
+                    text: "Save",
+                    size: 20,
                   ),
                 ),
                 //==================
@@ -177,7 +175,7 @@ class _UserdetailsState extends State<Userdetails> {
       ),
     );
   }
-  
+
   Future<void> onAddSaveButtonClicked() async {
     final _name = nameController.text.trim();
     final _mobile = mobController.text.trim();
@@ -186,7 +184,6 @@ class _UserdetailsState extends State<Userdetails> {
         _name.isEmpty ||
         _mobile.isEmpty ||
         _email.isEmpty) {
-      // Show error message or handle invalid input
       return;
     }
     final userDetails = UserDetailsModel(
