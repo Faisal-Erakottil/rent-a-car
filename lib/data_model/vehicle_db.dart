@@ -33,7 +33,6 @@ class VehicleDetailsModel extends HiveObject {
 
   set selectedImage(String selectedImage) {}
 
-  set fuel(String fuel) {}
 
   set isRented(bool isRented) {}
 

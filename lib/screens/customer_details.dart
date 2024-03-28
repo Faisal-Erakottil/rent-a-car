@@ -62,7 +62,6 @@ class _CustomerDataState extends State<CustomerData> {
                   onImageSelected:
                       (File? pickedImage, String? pickedImagePath) {
                     imgPath = pickedImagePath!;
-                    //print('Image selected: $pickedImage, Image path: $pickedImagePath');
                   },
                 ),
                 //==========================================================Name
@@ -161,7 +160,6 @@ class _CustomerDataState extends State<CustomerData> {
                       initialDate: currentDate,
                       firstDate: currentDate,
                       lastDate: DateTime(2050),
-                      
                     );
                     if (pickedDate != null) {
                       _dropOffController.text =
@@ -232,8 +230,6 @@ class _CustomerDataState extends State<CustomerData> {
     final dropOffDate = _dropOffController.text.trim();
     final meaterReading = _meaterReadingController.text.trim();
     final advance = _advanceController.text.trim();
-    //final imagePath = imgPath;
-
     if (name.isEmpty ||
         mobNumber.isEmpty ||
         licenseNumber.isEmpty ||
@@ -245,7 +241,6 @@ class _CustomerDataState extends State<CustomerData> {
         imgPath.isEmpty) {
       return;
     }
-
     final customer = CustomerDetailsModel(
       customerName: name,
       mobilNumber: mobNumber,
@@ -257,10 +252,9 @@ class _CustomerDataState extends State<CustomerData> {
       advance: advance,
       CustomerImage: imgPath,
     );
-
     addcustomer(customer);
-
-    Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const Customer()));
+    Navigator.pop(context);
+    // Navigator.of(context).pushReplacement(
+    //     MaterialPageRoute(builder: (context) => const Customer()));
   }
 }

@@ -44,12 +44,13 @@ Future<void> getVehicleDetails() async {
   vehiclenotifer.notifyListeners();
 }
 
-//===================================== Deleting Data from Box
+//===================================== Deleting Data from vehicle Box
 Future<void> deletVehicle(VehicleDetailsModel vehicleModel) async {
   final carDB = await Hive.openBox<VehicleDetailsModel>('vehicle_db');
   await vehicleModel.delete();
   getVehicleDetails();
 }
+
 
 
 //=======================================Remove vehicle
@@ -85,15 +86,6 @@ void clearRemovedCustomers() {
   removedCustomersList.clear();
 }
 
-//====================================== update vehicle
-// Future<void> UpdateVehicle(vehicleDetailsModel updatedVehicle, {required Type vehicleDetailsModel}) async {
-//   final vehicleDB = await Hive.openBox<vehicleDetailsModel>('vehicle_db');
-//   if (vehicleDB.containsKey(updatedVehicle.key)) {
-//     await vehicleDB.put(updatedVehicle.key, updatedVehicle);
-//     getVehicleDetails();
-//   }
-// }
-
 //==========================================adding Customer Details
 Future<void> addcustomer(CustomerDetailsModel value) async {
   final customerDB = await Hive.openBox<CustomerDetailsModel>("customer_db");
@@ -109,18 +101,13 @@ Future<void> getCustomerDetails() async {
   customerNotifier.value.clear();
   customerNotifier.value.addAll(customerDB.values);
   customerNotifier.notifyListeners();
-  // print('Customer details fetched and notifier updated');
 }
-
-//=======================================Delete customer
-Future<void> deleteCustomer(int id) async {
-  // print('Deleting customer with ID:$id');
+//======================================Deleting data from Customer Box
+Future<void> deleteCustomer(CustomerDetailsModel customerModel) async {
   final customerDB = await Hive.openBox<CustomerDetailsModel>('customer_db');
-  await customerDB.delete(id);
+  await customerModel.delete();
   getCustomerDetails();
-  // print('Customer deleted successfully');
 }
-
 //=========================================update customer
 Future<void> UpdateCustomer(CustomerDetailsModel updatedCustomer) async {
   final CustomerDB = await Hive.openBox<CustomerDetailsModel>("customer_db");
@@ -129,7 +116,6 @@ Future<void> UpdateCustomer(CustomerDetailsModel updatedCustomer) async {
     getCustomerDetails();
   }
 }
-
 //==================================search vehicle
 List<VehicleDetailsModel> searchCars(String query) {
   final vehicleDB = Hive.box<VehicleDetailsModel>("vehicle_db");
@@ -145,7 +131,6 @@ List<VehicleDetailsModel> searchCars(String query) {
           vehicle.vehiclename.toLowerCase().contains(lowerCaseQuery))
       .toList();
 }
-
 //====================================search Customer
 List<CustomerDetailsModel> searchCustomers(String query) {
   final CustomerDB = Hive.box<CustomerDetailsModel>("customer_db");

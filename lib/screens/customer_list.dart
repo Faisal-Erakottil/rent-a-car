@@ -43,11 +43,13 @@ class CustomerList extends StatelessWidget {
                       return Padding(
                         padding: const EdgeInsets.all(1),
                         child: GestureDetector(
-                          onTap: () {
+                         onTap: () {    
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (ctx) => CollectedData(),
+                              builder: (ctx) => CollectedData(
+                                customerDetails: data,
+                                ),
                               ),
                             );
                           },

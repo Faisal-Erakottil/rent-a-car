@@ -29,8 +29,6 @@ class _UpdateVehicleState extends State<UpdateVehicle> {
   String? selectedImage;
   String? selectedFuel;
   String? selectedSeat;
-  
-  
 
   @override
   void initState() {
@@ -155,39 +153,18 @@ class _UpdateVehicleState extends State<UpdateVehicle> {
                   keyboardType: TextInputType.number,
                 ),
                 const Gap(10),
-                // if (imagepath != null && kIsWeb)
-                //   Image.network(
-                //     imagepath!.path,
-                //     width: double.infinity,
-                //     height: double.infinity,
-                //     fit: BoxFit.cover,
-                //   ),
-
-                // if (imagepath == null)
-                //   const Center(
-                //     child: CustomText(
-                //       text: " Add Image+",
-                //       size: 16,
-                //       fontWeight: FontWeight.bold,
-                //       color: Colors.black,
-                //     ),
-                //   ),
-                // const Positioned(
-                //   child: Icon(
-                //     Icons.edit,
-                //     color: Colors.black,
-                //   ),
-                // ),
-                const Gap(10),
+                //=====================================Edit Image
                 customButton(
-                    backgroundColor: CustomColor.blue,
-                    labelColor: CustomColor.black,
-                    onPressed: pickImageFromGallery,
-                    label: 'Add Image'),
+                  backgroundColor: CustomColor.blue,
+                  labelColor: CustomColor.black,
+                  onPressed: pickImageFromGallery,
+                  label: 'Add Image',
+                ),
                 const Gap(10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    //============================================Update Button
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
@@ -199,11 +176,16 @@ class _UpdateVehicleState extends State<UpdateVehicle> {
                       onPressed: () async {
                         widget.vehicleModel.vehiclename =
                             vehiclenameController.text;
+
                         widget.vehicleModel.vehiclereg =
                             vehicleRegController.text;
+
                         widget.vehicleModel.rent = vehicleRentController.text;
+
                         widget.vehicleModel.seates = selectedSeat ?? "";
-                        widget.vehicleModel.fuel = selectedFuel ?? "";
+
+                        widget.vehicleModel.fueltype = selectedFuel ?? "";
+                        
                         widget.vehicleModel.carimage = selectedImage ?? "";
                         await widget.vehicleModel.save();
                         Navigator.pop(context);
