@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:main_project/data_model/customer_db.dart';
 import 'package:main_project/db_functions/db_functions.dart';
-import 'package:main_project/screens/customer.dart';
 import 'package:main_project/widgets/custom_button.dart';
 import 'package:main_project/widgets/custom_text.dart';
 import 'package:main_project/widgets/custom_text_field.dart';

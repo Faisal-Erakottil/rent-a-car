@@ -19,18 +19,17 @@ class AddVehicle extends StatefulWidget {
   @override
   State<AddVehicle> createState() => AddVehicleState();
 }
-  final vehiclenameController = TextEditingController();
-  final vehicleRegController = TextEditingController();
-  final vehicleRentController = TextEditingController();
-  File? imagepath;
-  String? selectedImage;
-  String? selectedFuel;
-  String? selectedSeat;
-  final formKey = GlobalKey<FormState>();
+
+final vehiclenameController = TextEditingController();
+final vehicleRegController = TextEditingController();
+final vehicleRentController = TextEditingController();
+File? imagepath;
+String? selectedImage;
+String? selectedFuel;
+String? selectedSeat;
+final formKey = GlobalKey<FormState>();
 
 class AddVehicleState extends State<AddVehicle> {
-
-
   @override
   void initState() {
     super.initState();
@@ -40,7 +39,7 @@ class AddVehicleState extends State<AddVehicle> {
       vehicleRentController.text = widget.vehicle!.rent;
       selectedFuel = widget.vehicle!.fueltype;
       selectedSeat = widget.vehicle!.seates;
-      
+
       if (widget.vehicle!.carimage.isNotEmpty) {
         setState(() {
           imagepath = File(widget.vehicle!.carimage);
@@ -52,7 +51,7 @@ class AddVehicleState extends State<AddVehicle> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:  CustomColor.primary,
+      backgroundColor: CustomColor.primary,
       appBar: AppBar(
         backgroundColor: CustomColor.black,
         title: const Padding(
@@ -99,14 +98,13 @@ class AddVehicleState extends State<AddVehicle> {
                             fit: BoxFit.cover,
                           ),
                         ),
-                      if(imagepath != null && kIsWeb)
-                      Image.network(
-                        imagepath!.path,
-                        width: double.infinity,
-                        height: double.infinity,
-                        fit: BoxFit.cover,
-                      ),
-
+                      if (imagepath != null && kIsWeb)
+                        Image.network(
+                          imagepath!.path,
+                          width: double.infinity,
+                          height: double.infinity,
+                          fit: BoxFit.cover,
+                        ),
                       if (imagepath == null)
                         const Center(
                           child: CustomText(
@@ -139,7 +137,12 @@ class AddVehicleState extends State<AddVehicle> {
                     fieldName: "Car Name",
                     prefixIcon: Icons.directions_car_filled,
                     keyboardType: TextInputType.name,
-                    textCapitalization: TextCapitalization.characters,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Enter vehicle Name";
+                      }
+                      return null;
+                    },
                   ),
                   const Gap(10),
                   //=====================================Vehicle number
@@ -148,7 +151,12 @@ class AddVehicleState extends State<AddVehicle> {
                     labelText: "Registeration Number",
                     fieldName: "Registeration Number",
                     prefixIcon: Icons.pin,
-                    keyboardType: TextInputType.streetAddress,
+                    validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Enter Register Number';
+                    }
+                    return null;
+                  },
                   ),
 
                   const Gap(10),
@@ -205,6 +213,12 @@ class AddVehicleState extends State<AddVehicle> {
                     fieldName: "Rent/Day",
                     prefixIcon: Icons.currency_rupee,
                     keyboardType: TextInputType.number,
+                     validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Enter rent of the vehicle";
+                    }
+                    return null;
+                  },
                   ),
 
                   const Gap(10),
@@ -303,26 +317,4 @@ class AddVehicleState extends State<AddVehicle> {
           ),
         ));
   }
-
-  // Future<void> editvehicle(
-  //   VehicleDetailsModel vehicleModel,
-  //   String vehicleName,
-  //   String regNumber,
-  //   String rent,
-  //   String fuel,
-  //   String seater,
-  //   String days,
-  //   String vehicleimg,
-  // ) async {
-  //   vehiclenameController.text = vehicleName;
-  //   vehicleRegController.text = regNumber;
-  //   vehicleRentController.text = rent;
-  //   selectedFuel = fuel;
-  //   selectedSeat = seater;
-  //   selectedImage = vehicleimg;
-  //   // Navigator.of(context).push(MaterialPageRoute(
-  //   //   builder: (context) =>
-  //   //       UpdateVehicle(vehicleDetailsModel: vehicleDetailsModel),
-  //   // ));
-  // }
 }

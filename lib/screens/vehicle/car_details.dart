@@ -28,7 +28,6 @@ class _MyWidgetState extends State<cardetails> {
   var vehiclenameController = TextEditingController();
   var vehicleRegController = TextEditingController();
   var dailyrentController = TextEditingController();
-  var dropoffController = TextEditingController();
   File? imagepath;
   String? selectedImage;
   String? selectedFuel;
@@ -94,7 +93,7 @@ class _MyWidgetState extends State<cardetails> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(20),
-                    child: _buildSelectedImage(),
+                    child:_buildSelectedImage(), 
                   ),
                   const SizedBox(height: 40),
                   SizedBox(
@@ -310,7 +309,9 @@ class _MyWidgetState extends State<cardetails> {
     selectedFuel = fuelType;
     selectedImage = carImage;
     Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => UpdateVehicle(vehicleModel: vehiclemodel),
+      builder: (context) => UpdateVehicle(
+        vehicleModel: vehiclemodel,
+      ),
     ));
   }
 }

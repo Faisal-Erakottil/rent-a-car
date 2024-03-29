@@ -1,4 +1,4 @@
-// ignore_for_file: non_constant_identifier_names, use_build_context_synchronously
+// ignore_for_file: non_constant_identifier_names, use_build_context_synchronously, prefer_const_constructors, avoid_print
 
 import 'dart:io';
 
@@ -13,7 +13,6 @@ import 'package:main_project/widgets/customcolors.dart';
 class UpdateCustomer extends StatefulWidget {
   final CustomerDetailsModel customerModel;
   const UpdateCustomer({super.key, required this.customerModel});
-
   @override
   State<UpdateCustomer> createState() => _UpdateCustomerState();
 }
@@ -23,7 +22,6 @@ class _UpdateCustomerState extends State<UpdateCustomer> {
   var _nameController = TextEditingController();
   var _mobController = TextEditingController();
   var _licenseNumberController = TextEditingController();
-  var _emailController = TextEditingController();
   var _PickUpController = TextEditingController();
   var _dropOffController = TextEditingController();
   var _meaterReadingController = TextEditingController();
@@ -38,7 +36,6 @@ class _UpdateCustomerState extends State<UpdateCustomer> {
     _nameController = TextEditingController();
     _mobController = TextEditingController();
     _licenseNumberController = TextEditingController();
-    _emailController = TextEditingController();
     _PickUpController = TextEditingController();
     _dropOffController = TextEditingController();
     _meaterReadingController = TextEditingController();
@@ -48,7 +45,6 @@ class _UpdateCustomerState extends State<UpdateCustomer> {
     _nameController.text = widget.customerModel.customerName;
     _mobController.text = widget.customerModel.mobilNumber;
     _licenseNumberController.text = widget.customerModel.licenceNumber;
-    _emailController.text = widget.customerModel.email;
     _PickUpController.text = widget.customerModel.pickUpDate;
     _dropOffController.text = widget.customerModel.dropOffDate;
     _meaterReadingController.text = widget.customerModel.reading;
@@ -59,12 +55,13 @@ class _UpdateCustomerState extends State<UpdateCustomer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: CustomColor.primary,
       appBar: AppBar(
-        title: const Center(
-          child: CustomText(
-            text: 'Customer Details',
-            fontWeight: FontWeight.bold,
-          ),
+        backgroundColor: CustomColor.black,
+        centerTitle: true,
+        title: CustomText(
+          text: 'Update Customer',
+          fontWeight: FontWeight.bold,
         ),
         iconTheme: const IconThemeData(color: CustomColor.white),
       ),
@@ -74,14 +71,42 @@ class _UpdateCustomerState extends State<UpdateCustomer> {
           child: Form(
             key: formKey,
             child: Column(
-              children: [
+              //==================================image
+              children: [                
+                if (Selectedimage != null)
+                  SizedBox(
+                    height: 170,
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        GestureDetector(
+                          child: CircleAvatar(
+                            radius: 100,
+                            backgroundImage: FileImage(File(Selectedimage!)),
+                          ),
+                          onTap: () {
+                            pickImageFromGallery();
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                space,
+                //===================================Name
                 CustomTextField(
                   labelText: 'Name',
                   fieldName: 'Name',
                   keyboardType: TextInputType.name,
                   controller: _nameController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Enter Customer Name';
+                    }
+                    return null;
+                  },
                 ),
                 space,
+                //===================================Mobile Number
                 CustomTextField(
                   labelText: 'Mobile number',
                   fieldName: 'Mobile number',
@@ -98,23 +123,7 @@ class _UpdateCustomerState extends State<UpdateCustomer> {
                   },
                 ),
                 space,
-                CustomTextField(
-                  labelText: 'Email Id',
-                  fieldName: 'Email Id',
-                  controller: _emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter an email address';
-                    }
-                    if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
-                        .hasMatch(value)) {
-                      return 'Invalid email address';
-                    }
-                    return null;
-                  },
-                ),
-                space,
+                //===================================License Number
                 CustomTextField(
                   labelText: 'License Number',
                   fieldName: 'License Number',
@@ -130,80 +139,107 @@ class _UpdateCustomerState extends State<UpdateCustomer> {
                   },
                 ),
                 space,
+                //===================================Pick up Date
                 CustomTextField(
-                  labelText: 'Number of days',
-                  fieldName: 'Number of days',
+                  labelText: 'Pick Up Date',
+                  fieldName: 'Pick Up Date',
                   controller: _PickUpController,
-                  keyboardType: TextInputType.number,
+                  keyboardType: TextInputType.datetime,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'pick up date is empty';
+                    }
+                    return null;
+                  },
                 ),
                 space,
-                if (Selectedimage != null)
-                  SizedBox(
-                    height: 150,
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Image.file(
-                            File(Selectedimage!),
-                            width: double.infinity,
-                            height: double.infinity,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        Positioned(
-                          top: 0,
-                          right: 0,
-                          child: IconButton(
-                            icon: const Icon(Icons.edit),
-                            onPressed: pickImageFromGallery,
-                            color: Colors.amber,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                //===================================Drop off date
+                CustomTextField(
+                  controller: _dropOffController,
+                  labelText: "Drop off Date",
+                  fieldName: "Drop off Date",
+                  keyboardType: TextInputType.datetime,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Drop off date is empty';
+                    }
+                    return null;
+                  },
+                ),
                 space,
-                customButton(
-                  onPressed: pickImageFromGallery,
-                  label: 'ADD IMAGE',
+                //===================================Meater reading
+                CustomTextField(
+                  controller: _meaterReadingController,
+                  labelText: "Meater Reading",
+                  fieldName: "Meater Reading",
+                  keyboardType: TextInputType.number,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Meater reading is Empty';
+                    }
+                    return null;
+                  },
+                ),
+                space,
+                //===================================Advance amount
+                CustomTextField(
+                  controller: _advanceController,
+                  labelText: "Advance ",
+                  fieldName: "Advance",
+                  keyboardType: TextInputType.number,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Enter Advance amount';
+                    }
+                    return null;
+                  },
                 ),
                 space,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    //===================================update button
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15),
                         ),
-                        backgroundColor: const Color.fromARGB(255, 10, 47, 39),
-                        fixedSize: const Size(300, 30),
+                        backgroundColor: CustomColor.blue,
+                        fixedSize: Size(200, 30),
                       ),
                       onPressed: () async {
-                        widget.customerModel.customerName =
-                            _nameController.text;
-                        widget.customerModel.mobilNumber = _mobController.text;
-                        widget.customerModel.licenceNumber =
-                            _licenseNumberController.text;
-                        widget.customerModel.email = _emailController.text;
-                        widget.customerModel.pickUpDate =
-                            _PickUpController.text;
-                        widget.customerModel.dropOffDate =
-                            _dropOffController.text;
-                        widget.customerModel.reading =
-                            _meaterReadingController.text;
-                        widget.customerModel.advance = _advanceController.text;
-                        widget.customerModel.CustomerImage =
-                            Selectedimage ?? "";
-                        await widget.customerModel.save();
+                        if (formKey.currentState?.validate() ?? false) {
+                          widget.customerModel.customerName =
+                              _nameController.text;
 
+                          widget.customerModel.mobilNumber =
+                              _mobController.text;
+
+                          widget.customerModel.licenceNumber =
+                              _licenseNumberController.text;
+
+                          widget.customerModel.pickUpDate =
+                              _PickUpController.text;
+
+                          widget.customerModel.dropOffDate =
+                              _dropOffController.text;
+
+                          widget.customerModel.reading =
+                              _meaterReadingController.text;
+
+                          widget.customerModel.advance =
+                              _advanceController.text;
+
+                          widget.customerModel.CustomerImage =
+                              Selectedimage ?? "";
+
+                          await widget.customerModel.save();
+                        }
                         Navigator.pop(context);
                       },
-                      child: const Text(
-                        'UPDATE',
-                        style: TextStyle(color: Colors.amber),
+                      child: const CustomText(
+                        text: 'UPDATE',
+                        color: CustomColor.black,
                       ),
                     ),
                   ],
@@ -221,7 +257,6 @@ class _UpdateCustomerState extends State<UpdateCustomer> {
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (returnedImage != null) {
       setState(() {
-        // imgPath = File(returnedImage.path);
         Selectedimage = returnedImage.path;
       });
     }

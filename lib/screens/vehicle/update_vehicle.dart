@@ -1,8 +1,7 @@
-// ignore_for_file: must_call_super, use_build_context_synchronously
+// ignore_for_file: must_call_super, use_build_context_synchronously, prefer_const_constructors
 
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:image_picker/image_picker.dart';
@@ -64,41 +63,67 @@ class _UpdateVehicleState extends State<UpdateVehicle> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(10),
+          padding: const EdgeInsets.all(20),
           child: Form(
             key: formKey,
             child: Column(
+              //========================================image
               children: [
-                if (imagepath != null && !kIsWeb)
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: Image.file(
-                      imagepath!,
-                      width: double.infinity,
-                      height: double.infinity,
-                      fit: BoxFit.cover,
+                if (selectedImage != null)
+                  SizedBox(
+                    height: 200,
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        GestureDetector(
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Image.file(
+                              File(selectedImage!),
+                              width: double.infinity,
+                              height: double.infinity,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          onTap: () {
+                            pickImageFromGallery();
+                          },
+                        )
+                      ],
                     ),
                   ),
                 //=====================================Vehicle name
+                Gap(25),
                 CustomTextField(
                   controller: vehiclenameController,
                   labelText: "Car Name",
                   fieldName: "Car Name",
                   prefixIcon: Icons.directions_car_filled,
                   keyboardType: TextInputType.name,
-                  textCapitalization: TextCapitalization.characters,
+                  textCapitalization: TextCapitalization.values,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Vehicle Name is Empty';
+                    }
+                    return null;
+                  },
                 ),
-                const Gap(10),
+                Gap(15),
                 //=====================================Vehicle number
                 CustomTextField(
                   controller: vehicleRegController,
                   labelText: "Registeration Number",
                   fieldName: "Registeration Number",
                   prefixIcon: Icons.pin,
-                  keyboardType: TextInputType.streetAddress,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Enter Register Number';
+                    }
+                    return null;
+                  },
                 ),
 
-                const Gap(10),
+                Gap(15),
                 //=====================================vehicle color
                 customDropdownField(
                   labelText: "Fuel Type",
@@ -121,7 +146,7 @@ class _UpdateVehicleState extends State<UpdateVehicle> {
                   ),
                 ),
 
-                const Gap(10),
+                Gap(15),
                 //=====================================Vehicle Rent
                 customDropdownField(
                   labelText: "seates",
@@ -143,7 +168,7 @@ class _UpdateVehicleState extends State<UpdateVehicle> {
                     Icons.chair,
                   ),
                 ),
-                const Gap(10),
+                const Gap(15),
                 //======================================vehicle fuel type
                 CustomTextField(
                   controller: vehicleRentController,
@@ -151,16 +176,14 @@ class _UpdateVehicleState extends State<UpdateVehicle> {
                   fieldName: "Rent/Day",
                   prefixIcon: Icons.currency_rupee,
                   keyboardType: TextInputType.number,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Enter rent of the vehicle";
+                    }
+                    return null;
+                  },
                 ),
-                const Gap(10),
-                //=====================================Edit Image
-                customButton(
-                  backgroundColor: CustomColor.blue,
-                  labelColor: CustomColor.black,
-                  onPressed: pickImageFromGallery,
-                  label: 'Add Image',
-                ),
-                const Gap(10),
+                const Gap(30),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -171,7 +194,7 @@ class _UpdateVehicleState extends State<UpdateVehicle> {
                           borderRadius: BorderRadius.circular(15),
                         ),
                         backgroundColor: CustomColor.blue,
-                        fixedSize: const Size(300, 30),
+                        fixedSize: const Size(200, 30),
                       ),
                       onPressed: () async {
                         widget.vehicleModel.vehiclename =
@@ -185,7 +208,7 @@ class _UpdateVehicleState extends State<UpdateVehicle> {
                         widget.vehicleModel.seates = selectedSeat ?? "";
 
                         widget.vehicleModel.fueltype = selectedFuel ?? "";
-                        
+
                         widget.vehicleModel.carimage = selectedImage ?? "";
                         await widget.vehicleModel.save();
                         Navigator.pop(context);

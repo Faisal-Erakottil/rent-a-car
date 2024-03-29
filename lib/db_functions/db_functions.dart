@@ -51,8 +51,6 @@ Future<void> deletVehicle(VehicleDetailsModel vehicleModel) async {
   getVehicleDetails();
 }
 
-
-
 //=======================================Remove vehicle
 List<VehicleDetailsModel> removedVehicleList = [];
 void removeCarFromScreen(VehicleDetailsModel vehicle) {
@@ -109,13 +107,13 @@ Future<void> deleteCustomer(CustomerDetailsModel customerModel) async {
   getCustomerDetails();
 }
 //=========================================update customer
-Future<void> UpdateCustomer(CustomerDetailsModel updatedCustomer) async {
-  final CustomerDB = await Hive.openBox<CustomerDetailsModel>("customer_db");
-  if (CustomerDB.containsKey(updatedCustomer.key)) {
-    await CustomerDB.put(updatedCustomer.key, updatedCustomer);
-    getCustomerDetails();
-  }
-}
+// Future<void> UpdateCustomer(CustomerDetailsModel updatedCustomer, {required CustomerDetailsModel customerModel}) async {
+//   final CustomerDB = await Hive.openBox<CustomerDetailsModel>("customer_db");
+//   if (CustomerDB.containsKey(updatedCustomer.key)) {
+//     await CustomerDB.put(updatedCustomer.key, updatedCustomer);
+//     getCustomerDetails();
+//   }
+// }
 //==================================search vehicle
 List<VehicleDetailsModel> searchCars(String query) {
   final vehicleDB = Hive.box<VehicleDetailsModel>("vehicle_db");
